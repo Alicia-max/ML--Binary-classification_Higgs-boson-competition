@@ -1,21 +1,5 @@
 import numpy as np
-from helpers import batch_iter
-
-
-def compute_mse(y, tx, w):
-    """
-    Compute the Mean Square Error. 
-    inputs are the targeted y, the sample matrix tx and the feature vector w. 
-    """
-    e = y - tx.dot(w)
-    mse = 1/2*np.mean(e**2)
-    return mse
-
-def compute_gradient(y, tx, w):
-
-    err = y - tx.dot(w)
-    grad = -tx.T.dot(err) / len(err)
-    return grad, err
+from project.helpers import *
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
   
@@ -26,7 +10,7 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
     for n_iter in range(max_iters):
         
         # compute loss, gradient
-        grad, err = compute_gradient(y, tx, w)
+        grad, err = compute_gradient_mse(y, tx, w)
         loss = compute_mse(err)
         # update w by gradient descent
         w = w - gamma * grad
@@ -44,9 +28,9 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
     w = initial_w
     
     for n_iter in range(max_iters):
-        for y_batch, tx_batch in batch_iter(y, tx, batch_size=batch_size, num_batches=1):
+        for y_batch, tx_batch in batch_iter(y, tx, batch_size=1, num_batches=1):
             # compute a stochastic gradient and loss
-            grad, _ = compute_gradient(y_batch, tx_batch, w)
+            grad, _ = compute_gradient_mse(y_batch, tx_batch, w)
             # update w through the stochastic gradient update
             w = w - gamma * grad
             # calculate loss
@@ -58,12 +42,26 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
     return losses, ws
 
 def least_squares(y, tx):
+    """
+    Performs simple leat square regression
+
+    Arguments:
+        y: np.array of size [n]
+            array of binary targets
+        tx: np.array of size [n,d]
+            array of d-dimensional features
+    Returns:
+        w: np.array of size [d]
+            weights computed with the least squares method
+        loss: scalar
+            computed corresponding MSE loss
+    """
     
     a = tx.T.dot(tx)
     b = tx.T.dot(y)
     
-    w= np.linalg.solve(a, b)
-    loss= compute_mse(y, tx, w)
+    w = np.linalg.solve(a, b)
+    loss = compute_mse(y, tx, w)
     
     return w, loss
 
