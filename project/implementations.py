@@ -2,9 +2,10 @@ import numpy as np
 from project.helpers import *
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
+    """
+    TODO
+    """
   
-    ws = [initial_w]
-    losses = []
     w = initial_w
     
     for n_iter in range(max_iters):
@@ -13,18 +14,14 @@ def least_squares_GD(y, tx, initial_w, max_iters, gamma):
         grad, err = compute_gradient_mse(y, tx, w)
         loss = compute_mse(err)
         # update w by gradient descent
-        w = w - gamma * grad
-        # store w and loss
-        ws.append(w)
-        losses.append(loss)
-       
+        w = w - gamma * grad       
 
-    return losses, ws
+    return w, loss
     
 def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
-    # Define parameters to store w and loss
-    ws = [initial_w]
-    losses = []
+    """
+    TODO
+    """
     w = initial_w
     
     for n_iter in range(max_iters):
@@ -35,11 +32,8 @@ def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
             w = w - gamma * grad
             # calculate loss
             loss = compute_mse(y, tx, w)
-            # store w and loss
-            ws.append(w)
-            losses.append(loss)
 
-    return losses, ws
+    return w, loss
 
 def least_squares(y, tx):
     """
@@ -67,30 +61,48 @@ def least_squares(y, tx):
 
   
 def ridge_regression(y, tx, lambda_):
+    """
+    TODO
+    """
   
-    a = tx.T.dot(tx) + 2*tx.shape[0]*np.identity(tx.shape[1])
+    a = tx.T.dot(tx) + 2*tx.shape[0]*lambda_*np.identity(tx.shape[1])
     b = tx.T.dot(y)
     
     w = np.linalg.solve(a, b)
     loss = compute_mse(y, tx, w)
     return w, loss
 
-def logistic_regression(y, tx, initial_w):
+def logistic_regression(y, tx, initial_w, max_iters, gamma):
     '''
-    
+    TODO
     '''
-    pass
+    # In case the targets are still in (-1, 1) range
+    y = np.maximum(0, y)
+
+    w = initial_w
+    loss = 0
+
+    for i in range(max_iters):
+        grad, _ = compute_gradient_logistic(y, tx, w)
+        w = w - gamma*grad
+
+    return w, loss
 
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     '''
-    
+    TODO
     '''
-    pass
+    # In case the targets are still in (-1, 1) range
+    y = np.maximum(0, y)
 
-def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
-    '''
-    
-    '''
-    pass
+    w = initial_w
+    loss = 0
+
+    for i in range(max_iters):
+        grad, _ = compute_gradient_logistic(y, tx, w)
+        grad = grad + lambda_*w**2
+        w = w - gamma*grad
+
+    return w, loss
 

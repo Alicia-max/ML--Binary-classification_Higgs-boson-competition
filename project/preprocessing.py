@@ -28,8 +28,11 @@ def preprocess_data(x):
     x = _fill_missing_values(x)
     ## Should we do the outliers here ?
 
+    ## Polynomial expansion
+    #x = _polynomial_expansion(x)
     ## Normalizing the data
     x_normalized = _standardize(x)
+
     return x_normalized
 
 
@@ -60,14 +63,16 @@ def _fill_missing_values(x, threshold = .8):
     
     x = _remove_columns(x, discarded_cols)
     return x
-        
+
+def _polynomial_expansion(x, degree = 3):
+    nb_points = x.shape[0]
+    expanded_x = [x]
+    for i in range(2, degree + 1):
+        expanded_x.append(x**i)
+    return np.array(expanded_x).reshape(nb_points, -1)
+
 def outlier(x):
     pass
-        
-        
-def remove_features (x, features) : 
-    pass
-
 
 if __name__ == "__main__":
     # For testing purposes

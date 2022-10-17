@@ -11,6 +11,12 @@ def set_seed(seed):
     np.random.seed(seed)
     random.seed(seed)
 
+def sigmoid(x):
+    """
+    TODO
+    """
+    return np.exp(x)/(1+np.exp(x))
+
 
 def compute_mse(y, tx, w):
     """
@@ -29,6 +35,14 @@ def compute_gradient_mse(y, tx, w):
     grad = -tx.T.dot(err) / len(err)
     return grad, err
 
+def compute_gradient_logistic(y, tx, w):
+    """
+    TODO and check implementation
+    """
+    grad = tx.T.dot(sigmoid(tx.dot(w))-y) 
+    err = 1/2*np.mean(sigmoid(tx.dot(w))-y)
+    return grad, err
+
 
 def load_csv_data(data_path, sub_sample=False):
     """Loads data and returns y (class labels), tX (features) and ids (event ids)"""
@@ -42,7 +56,7 @@ def load_csv_data(data_path, sub_sample=False):
     yb[np.where(y=='s')] = 1
     y = yb
 
-    # sub-sample
+    # sub-sample for testing purposes
     if sub_sample:
         y = y[::50]
         features= features[::50]
