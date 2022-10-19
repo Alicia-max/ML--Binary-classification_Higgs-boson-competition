@@ -38,7 +38,7 @@ def preprocess_data(x):
     ## Should we do the outliers here ?
 
     ## Polynomial expansion
-    x = _polynomial_expansion(x)
+    # x = _polynomial_expansion(x)
 
     # I was going to try this but my conda failed to activate at the end of the day :(
     # Will fix that try this sooooon :)
