@@ -14,6 +14,12 @@ Project 1-ML
 - ..
 ---
 
+### Done by Sevda 18.10
+I have observed the following:
+- I tried with mean instead of median and the accuracy was slightly better but not much (~0.5%)
+- I blacklisted the columns of 4-5-6 and 15-18-20 but didn’t observe an improvement. However, I tried with just removing the “_phi” features as in the winning model and it was again slightly better than the case with removing all of 4-5-6-15-18-20-and so on. Also, I remember that there was a source which does take the log of some features but the winning model that I skimmed through took “log(1+x) - log(1-x)” of a feature x if I understood correctly. I tried to understand the reasoning behind but couldn’t get so much out of it.
+- I started coding K-fold cross validation but it wasn’t done so I will probably work on that on either thursday or friday. Also do you think K-fold is OK or should we do leave-one-our or something other than these?
+
 ### Done by Alex 13.10
 Mainly preprocessing:
 - I've read the article on the physics behind, and from it i removed the features of columns (22 to 28) because they actually do not make any sense! It's actually the columns where there are ~70% of missing values so here ya go

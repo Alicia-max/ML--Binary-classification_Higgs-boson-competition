@@ -2,7 +2,16 @@ import numpy as np
 
 '''
 Black listed columns ID - Name
-22 - NOT SURE YET (Nbs of jet)
+
+4 - DER_deltaeta_jet_jet
+5 - DER_mass_jet_jet
+6 - DER_prodeta_jet_jet
+
+15 - PRI_tau_phi
+18 - PRI_lep_phi
+20 - PRI_met_phi
+
+22 - NOT SURE YET (Nbs of jet) --> REMOVE
 
 23 - PRI_jet_leading_pt
 24 - PRI_jet_leading_eta
@@ -11,7 +20,7 @@ Black listed columns ID - Name
 27 - PRI_jet_subleading_eta
 28 - PRI_jet_subleading_phi
 
-29 - NOT SURE YET TOO (Total pt)
+29 - NOT SURE YET TOO (Total pt) --> Maybe keep this? --> The scalar sum of the transverse momentum of all the jets of the events
 '''
 
 
@@ -20,7 +29,7 @@ def preprocess_data(x):
     Preprocessing the data.
     Should be applied to the train and test sets separately
     '''
-    black_listed_columns  = [22, 23, 24, 25, 26, 27, 28]
+    black_listed_columns  = [4, 5, 6, 15, 18, 20, 22, 23, 24, 25, 26, 27, 28]
     # Should we include 29 ?
     ## First removing the black-listed columns the columns
     x = _remove_columns(x, black_listed_columns)
@@ -29,7 +38,11 @@ def preprocess_data(x):
     ## Should we do the outliers here ?
 
     ## Polynomial expansion
-    #x = _polynomial_expansion(x)
+    x = _polynomial_expansion(x)
+
+    # I was going to try this but my conda failed to activate at the end of the day :(
+    # Will fix that try this sooooon :)
+
     ## Normalizing the data
     x_normalized = _standardize(x)
 
@@ -58,8 +71,9 @@ def _fill_missing_values(x, threshold = .8):
         if miss_perc > threshold:
             discarded_cols.append(j)
         else:
-            median = np.median(feat[feat!=-999.0])
-            x[:,j] = np.where(feat == -999.0, median, x[:,j])
+            # I observed that mean was a bit better
+            mean = np.mean(feat[feat!=-999.0])
+            x[:,j] = np.where(feat == -999.0, mean, x[:,j])
     
     x = _remove_columns(x, discarded_cols)
     return x
