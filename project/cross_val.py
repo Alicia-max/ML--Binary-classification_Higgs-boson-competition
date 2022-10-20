@@ -19,11 +19,14 @@ def build_k_indices(y, k_fold, seed):
     k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
     return np.array(k_indices)
 
-def cross_validation(y, x, k_indices, k_fold, method, lambda_=None, gamma=None, degree=1, **kwargs):
+def cross_validation(y, x, k_indices, k_fold, method, **params):
     
     acc_tr_tmp=[]
     acc_te_tmp=[]
-  
+    
+    degree = params['degree']
+    params_without_degree = params
+    del params_without_degree['degree']
     for k in range(k_fold) :
           # get k'th subgroup in test, others in train
             te_indice = k_indices[k]
@@ -39,22 +42,8 @@ def cross_validation(y, x, k_indices, k_fold, method, lambda_=None, gamma=None, 
             tx_tr = build_poly(x_tr, degree)
             tx_te = build_poly(x_te, degree)
             
-            # compute weights
-            #without GD or SDG 
-            if (gamma==None) : 
-                if(lambda_==None) : 
-                    w, loss = method(y_tr, tx_tr, **kwargs)
-                    
-                else: 
-                     w, loss = method(y_tr, tx_tr, lambda_=lambda_, **kwargs)
-                
-            #With GD or SDG 
-            else :
-                if(lambda_==None) : 
-                    w, loss = method(y_tr, tx_tr, gamma=gamma, **kwargs)    
-                else  :
-                    w, loss = method(y_tr, tx_tr, gamma=gamma, lambda_=lambda_, **kwargs)
-                    
+            w, loss = method(y_tr, tx_tr, **params_without_degree)
+
             #access accuracy
             acc_tr_tmp.append(accuracy(y_tr, predict(tx_tr,w)))
             acc_te_tmp.append(accuracy(y_te, predict(tx_te,w)))
@@ -64,7 +53,7 @@ def cross_validation(y, x, k_indices, k_fold, method, lambda_=None, gamma=None, 
             
     return acc_tr, acc_te
 
-def cross_tunning(y, x, k_fold, method, params, name_param, seed, **kwargs) :
+def cross_tunning(y, x, k_fold, method, parameters, seed) :
     
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
@@ -73,17 +62,12 @@ def cross_tunning(y, x, k_fold, method, params, name_param, seed, **kwargs) :
     acc_tr = []
     acc_te = []
     
-    # cross validation over the given params
-    for param in params:
-        if (name_param=='degree'):
-            acc_tr_, acc_te_ = cross_validation(y, x, k_indices, k_fold, method, degree=param, **kwargs)     
-        elif (name_param=='learning_rate'):
-            acc_tr_, acc_te_= cross_validation(y, x, k_indices, k_fold, method, gamma=param, **kwargs)       
-        
+    for params in parameters:
+        acc_tr_, acc_te_ = cross_validation(y, x, k_indices, k_fold, method, **params)
         acc_tr.append(acc_tr_)
-        acc_te.append(acc_te_)
+        acc_te.append(acc_te_)    
+    
+    idx_best =  np.argmax(acc_te)      
         
-    ind_best_param =  np.argmax(acc_te)      
-        
-    return params[ind_best_param], acc_tr, acc_te
+    return acc_tr, acc_te, idx_best
  

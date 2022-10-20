@@ -160,6 +160,8 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     y = np.maximum(0, y)
 
     w = initial_w
+    if initial_w is None:
+        w = np.zeros(tx.shape[1])
     loss = 0
 
     for i in range(max_iters):
@@ -176,6 +178,8 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     y = np.maximum(0, y)
 
     w = initial_w
+    if initial_w is None:
+        w = np.zeros(tx.shape[1])
     loss = 0
 
     for i in range(max_iters):

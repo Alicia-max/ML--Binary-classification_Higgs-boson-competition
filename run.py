@@ -14,7 +14,7 @@ def run():
     print('Size of test features', features_test.shape)
 
     ## Preprocess data
-    preprocessed_features_train = preprocess_data(features_train)
+    preprocessed_features_train = preprocess_data(features_train, target_train)
     preprocessed_features_test = preprocess_data(features_test)
 
     # ridge regression test

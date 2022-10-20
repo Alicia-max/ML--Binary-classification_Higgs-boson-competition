@@ -2,18 +2,20 @@
 Project 1-ML
 ## TODO
 ### Most important
+- Do standardization after polynomial augmentation
+- Average the accuracies on the folds and add the error
+- Start the report
+- Write a proper README, comment the code, make the variable name coherent... (I'll take care of this i'm super OCD)
 - Finetune the preprocessing. Some refs say to discard all the columns that have '_phi_' in it. Should test that. Also we might want to log transform some of the features, I think I have seen this done in a few projects but cannot find the references anyomore. Finally trhere are some features that are categorical, and so far the preprocessing function treats them like the other, which it should not so fix needed here. That is maybe why the polynomial augmentation does not work properly so far.
 - You'll see in the histogram after preprocessing that a lot of values are centers in 0. Why the fuck ? should we just remove this ?
-- Cross-validation (!!!)
-- Refactor the code so we can do some grid-search easily (overnight on the cluster for example)
-- Start the report
 ### Less important
 - Maybe try a fourier augmentation ? ( works really well with images/sound...)
-- Remove the outliers (I have no clue how to do this). Does it even make sense ?
-- Try 'Mean' and 'Median' for the filling of the missing values
 - ..
 ---
-
+### Done bz Alex 20.10
+- Finalized cross-validation, now we can run with list of parameters. check visu.ipynb for more info.
+- Tried it on all the models. Ridge is indeed the one that works best.
+- Added again the features we were not sure about. (the ones with $\phi$ in the name)
 ### Done by Sevda 18.10
 I have observed the following:
 - I tried with mean instead of median and the accuracy was slightly better but not much (~0.5%)
