@@ -3,11 +3,28 @@
 import numpy as np
 from implementations import *
 
+
+
+def _standardize(x):
+    '''
+    Standarize the data according the mean and the standard deviation
+    and take as an input the features matrix X
+    '''
+    centered_data = x - np.mean(x, axis=0)
+    std=np.std(centered_data, axis=0)
+    
+    std_data = centered_data[:,std>0] /std[std>0]
+    
+    if(len(std[std <=0])>0) : 
+        print ("There's 0 standard deviation")
+    
+    return std_data
+
 def build_poly(x, degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
     poly = np.ones((len(x), 1))
     for deg in range(1, degree+1):
-        poly = np.c_[poly, np.power(x, deg)]
+        poly = np.c_[poly, np.power(x, deg)]   
     return poly
 
 def build_k_indices(y, k_fold, seed):
@@ -41,12 +58,14 @@ def cross_validation(y, x, k_indices, k_fold, method, **params):
             # form data with polynomial degree
             tx_tr = build_poly(x_tr, degree)
             tx_te = build_poly(x_te, degree)
+            tx_tr_std=_standardize(tx_tr[:,1:])
+            tx_te_std=_standardize(tx_te[:,1:])
             
-            w, loss = method(y_tr, tx_tr, **params_without_degree)
+            w, loss = method(y_tr, tx_tr_std, **params_without_degree)
 
             #access accuracy
-            acc_tr_tmp.append(accuracy(y_tr, predict(tx_tr,w)))
-            acc_te_tmp.append(accuracy(y_te, predict(tx_te,w)))
+            acc_tr_tmp.append(accuracy(y_tr, predict(tx_tr_std,w)))
+            acc_te_tmp.append(accuracy(y_te, predict(tx_te_std,w)))
        
     acc_tr=np.mean(acc_tr_tmp)
     acc_te=np.mean(acc_te_tmp)

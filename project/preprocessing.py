@@ -34,25 +34,14 @@ def preprocess_data(x,y=None, test = False):
     x = _fill_missing_values(x)
     
     ## Remove outliers on the training set only
-    if test==False :
+    if (test==False):
         x, y = _remove_outlier(x,y, 1.5, 5)  
 
-    ## Normalizing the data
-    x = _standardize(x)
-    
     ##Offset adding
     x=_add_offset(x)
 
     return x,y
 
-def _standardize(x):
-    '''
-    Standarize the data according the mean and the standard deviation
-    and take as an input the features matrix X
-    '''
-    centered_data = x - np.mean(x, axis=0)
-    std_data = centered_data / np.std(centered_data, axis=0)
-    return std_data
 
 def _remove_columns(x, columns):
     '''
@@ -87,14 +76,13 @@ def _fill_missing_values(x, threshold = .8):
         if miss_perc > threshold:
             discarded_cols.append(j)
         else:
-            # I observed that mean was a bit better, but median is more robust
             mean = np.median(feat[feat!=-999.0])
             x[:,j] = np.where(feat == -999.0, mean, x[:,j])
     
     x = _remove_columns(x, discarded_cols)
     return x
 
-def _remove_outlier(x, y, threshold = 1.5, level=10):
+def _remove_outlier(x, y, threshold = 1.5, level=5):
     '''
     Delete rows with outliers, that for example may be due to experimental error.
     Input : 
@@ -123,7 +111,7 @@ def _remove_outlier(x, y, threshold = 1.5, level=10):
         
     return np.array(x), np.array(y)
 
-def _find_outliers(x, threshold=1.5, level=10):
+def _find_outliers(x, threshold=1.5, level=5):
     '''
     Scearch the index containing outliers using the interquartile range (IQR)
     
