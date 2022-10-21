@@ -47,14 +47,12 @@ def build_k_indices(y, k_fold, seed):
     indices = np.random.permutation(num_row)
     k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
     return np.array(k_indices)
-
-def cross_validation(y, x, k_indices, k_fold, method,  **params):
+def cross_validation(y, x, k_indices, k_fold, method, **params):
     
     acc_tr_tmp=[]
     acc_te_tmp=[]
-    degree = params['degree']
     
-   
+    degree = params['degree']
     params_without_degree = params
     del params_without_degree['degree']
     for k in range(k_fold) :
@@ -69,24 +67,14 @@ def cross_validation(y, x, k_indices, k_fold, method,  **params):
             x_tr = x[tr_indice,:]
             
             # form data with polynomial degree
-           
             tx_tr = build_poly(x_tr, degree)
             tx_te = build_poly(x_te, degree)
-           
-            tx_tr_std=standardize(tx_tr)
-            tx_te_std=standardize(tx_te)
-         
             
-        
-            tx_tr_std = add_offset(tx_tr_std)
-            tx_te_std = add_offset(tx_te_std)
-            
-            
-            w, loss = method(y_tr, tx_tr_std, **params_without_degree)
+            w, loss = method(y_tr, tx_tr, **params_without_degree)
 
             #access accuracy
-            acc_tr_tmp.append(accuracy(y_tr, predict(tx_tr_std,w)))
-            acc_te_tmp.append(accuracy(y_te, predict(tx_te_std,w)))
+            acc_tr_tmp.append(accuracy(y_tr, predict(tx_tr,w)))
+            acc_te_tmp.append(accuracy(y_te, predict(tx_te,w)))
        
     acc_tr=np.mean(acc_tr_tmp)
     acc_te=np.mean(acc_te_tmp)
@@ -109,5 +97,4 @@ def cross_tunning(y, x, k_fold, method, parameters, seed) :
     
     idx_best =  np.argmax(acc_te)      
         
-    return acc_tr, acc_te, idx_best
- 
+    return acc_tr, acc_te,  idx_best

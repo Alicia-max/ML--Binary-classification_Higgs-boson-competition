@@ -12,12 +12,9 @@ def set_seed(seed):
     np.random.seed(seed)
     random.seed(seed)
     
-
-def sigmoid(x):
-    """
-    TODO
-    """
-    return np.exp(x)/(1+np.exp(x))
+def sigmoid(t):
+    """apply sigmoid function on t."""
+    return 1.0 / (1 + np.exp(-t))
 
 def compute_mse(y, tx, w):
     """
@@ -25,8 +22,12 @@ def compute_mse(y, tx, w):
     inputs are the targeted y, the sample matrix tx and the feature vector w. 
     """
     e = y - tx.dot(w)
-    mse = 1/2*np.mean(e**2)
+    e[e>1e150] = 1e150
+    e[e<-1e150] = -1e150
+    mse = (1/2)*np.mean(e**2)
     return mse
+
+
 
 def accuracy(y,y_pred):
     """
@@ -51,12 +52,17 @@ def compute_gradient_mse(y, tx, w):
     return grad, err
 
 def compute_gradient_logistic(y, tx, w):
-    """
-    TODO and check implementation
-    """
-    grad = tx.T.dot(sigmoid(tx.dot(w))-y) 
-    err = 1/2*np.mean(sigmoid(tx.dot(w))-y)
-    return grad, err
+    """compute the gradient of loss."""
+    pred = sigmoid(tx.dot(w))
+    grad = tx.T.dot(pred - y)
+    return grad
+
+
+def calculate_loss_log(y, tx, w):
+    """compute the cost by negative log likelihood."""
+    pred = sigmoid(tx.dot(w))
+    loss = y.T.dot(np.log(pred)) + (1 - y).T.dot(np.log(1 - pred))
+    return np.squeeze(- loss)
 
 def predict(x, w): 
     """
@@ -91,14 +97,15 @@ def least_squares_GD(y, tx, initial_w=0, max_iters=50, gamma=0.1):
     
     w = initial_w
     for n_iter in range(max_iters):
-        # compute loss, gradient
+        # compute gradient
         grad, err = compute_gradient_mse(y, tx, w)
-        loss = compute_mse(y, tx, w)
         # update w by gradient descent
-        w = w - gamma * grad       
+        w = w - gamma * grad    
         
-    return w, loss
+    loss=compute_mse(y, tx, w) 
     
+    return w, loss
+
 def least_squares_SGD(y, tx, initial_w= 0, max_iters=50, gamma=0.1):
     """
     
@@ -124,8 +131,7 @@ def least_squares_SGD(y, tx, initial_w= 0, max_iters=50, gamma=0.1):
             # update w through the stochastic gradient update
             w = w - gamma * grad
             # calculate loss
-            loss = compute_mse(y, tx, w)
-
+        loss = compute_mse(y, tx, w)
     return w, loss
 
 def least_squares(y, tx):
@@ -152,7 +158,7 @@ def ridge_regression(y, tx, lambda_):
     loss = compute_mse(y, tx, w)
     return w, loss
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma):
+def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8):
     '''
     TODO
     '''
@@ -162,13 +168,22 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     w = initial_w
     if initial_w is None:
         w = np.zeros(tx.shape[1])
-    loss = 0
-
+        
+    losses=[]
     for i in range(max_iters):
-        grad, _ = compute_gradient_logistic(y, tx, w)
-        w = w - gamma*grad
-
-    return w, loss
+        
+        
+        grad = compute_gradient_logistic(y, tx, w)
+        w = w - gamma * grad
+        # compute loss  
+        
+        loss = calculate_loss_log(y, tx, w)
+        losses.append(loss)
+       
+        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+            break
+            
+    return w, losses[-1]
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     '''

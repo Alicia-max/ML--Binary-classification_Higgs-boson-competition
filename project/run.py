@@ -30,7 +30,7 @@ def run(method, degree, params):
     tx_te_std =  add_offset(tx_te_std)
  
 
-    
+    print(params)
     W, loss = method(preprocessed_y, tx_tr_std, **params)
     
     print('train accuracy ', accuracy(preprocessed_y, predict(tx_tr_std,W)))
