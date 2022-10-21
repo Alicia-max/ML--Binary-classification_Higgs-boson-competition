@@ -20,7 +20,8 @@ Black listed columns ID - Name
 27 - PRI_jet_subleading_eta
 28 - PRI_jet_subleading_phi
 '''
-def preprocess_data(x,y=None, test = False):
+
+def preprocess_data(X_train, X_test, y_train):
     '''
     Preprocessing the data.
     Should be applied to the train and test sets separately
@@ -28,22 +29,19 @@ def preprocess_data(x,y=None, test = False):
     black_listed_columns  = [4, 5, 6, 22, 23, 24, 25, 26, 27, 28]
    
     ## First removing the black-listed columns the columns
-    x = _remove_columns(x, black_listed_columns)
+    X_train, X_test = _remove_columns(X_train, X_test,  black_listed_columns)
+   
     
     ## Filling the missing values with the median of each sets
-    x = _fill_missing_values(x)
+    X_train , X_test = _fill_missing_values(X_train, X_test)
     
     ## Remove outliers on the training set only
-    if (test==False):
-        x, y = _remove_outlier(x,y, 1.5, 5)  
+    X_train, y_train = _remove_outlier(X_train,y_train, 1.5, 5)  
 
-    ##Offset adding
-    x=_add_offset(x)
-
-    return x,y
+    return X_train, X_test, y_train
 
 
-def _remove_columns(x, columns):
+def _remove_columns(X_train, X_test, columns):
     '''
     Remove the given column of X 
     Input : 
@@ -52,11 +50,11 @@ def _remove_columns(x, columns):
     Output :
         - x : the modified features matrix X
     '''
-    total_nb_columns = x.shape[1]
+    total_nb_columns = X_train.shape[1]
     kept_columns =  np.delete(np.arange(total_nb_columns), columns)
-    return x[:, kept_columns]
+    return X_train[:, kept_columns], X_test[:, kept_columns]
 
-def _fill_missing_values(x, threshold = .8):
+def _fill_missing_values(X_train,X_test, threshold = .8):
     '''
     Verify for each features of X the level of missing information 
     and replace the missing values (by the median) or discard the feature according to the threshold.
@@ -69,18 +67,21 @@ def _fill_missing_values(x, threshold = .8):
     discarded_cols = []
     
     #Check missing value according the features 
-    for j in range(x.shape[1]) : 
-        feat = x[:,j]
+    for j in range(X_train.shape[1]) : 
+        feat = X_train[:,j]
         #check % of missing value per col
         miss_perc = len(feat[feat==-999.0])/len(feat)
         if miss_perc > threshold:
             discarded_cols.append(j)
         else:
             mean = np.median(feat[feat!=-999.0])
-            x[:,j] = np.where(feat == -999.0, mean, x[:,j])
+            X_train[:,j] = np.where(feat == -999.0, mean, X_train[:,j])
+            X_test[:,j] = np.where(X_test[:,j]==-999.0, mean, X_test[:,j])
     
-    x = _remove_columns(x, discarded_cols)
-    return x
+    X_train, X_test = _remove_columns(X_train, X_test, discarded_cols)
+
+    
+    return X_train, X_test
 
 def _remove_outlier(x, y, threshold = 1.5, level=5):
     '''
@@ -141,11 +142,6 @@ def _find_outliers(x, threshold=1.5, level=5):
             
     return outliers_index
 
-def _add_offset(x): 
-    '''
-    Add a column of 1 to the feature matrix x
-    '''
-    return (np.c_[np.ones(x.shape[0]), x])
 
     
 if __name__ == "__main__":

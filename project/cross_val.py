@@ -3,9 +3,14 @@
 import numpy as np
 from implementations import *
 
+def add_offset(x): 
+    '''
+    Add a column of 1 to the feature matrix x
+    '''
+    return (np.c_[np.ones(x.shape[0]), x])
 
 
-def _standardize(x):
+def standardize(x):
     '''
     Standarize the data according the mean and the standard deviation
     and take as an input the features matrix X
@@ -15,16 +20,23 @@ def _standardize(x):
     
     std_data = centered_data[:,std>0] /std[std>0]
     
-    if(len(std[std <=0])>0) : 
-        print ("There's 0 standard deviation")
+    std_0 = std[std <=0]
+    
+    if(len(std_0)>0) :
+        raise ValueError("DIVISION BY 0 : There are features with standard deviation equal to 0")
+ 
     
     return std_data
 
 def build_poly(x, degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
-    poly = np.ones((len(x), 1))
+    poly = np.ones((len(x),0))
+    
+   
     for deg in range(1, degree+1):
+      
         poly = np.c_[poly, np.power(x, deg)]   
+  
     return poly
 
 def build_k_indices(y, k_fold, seed):
@@ -36,12 +48,13 @@ def build_k_indices(y, k_fold, seed):
     k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
     return np.array(k_indices)
 
-def cross_validation(y, x, k_indices, k_fold, method, **params):
+def cross_validation(y, x, k_indices, k_fold, method,  **params):
     
     acc_tr_tmp=[]
     acc_te_tmp=[]
-    
     degree = params['degree']
+    
+   
     params_without_degree = params
     del params_without_degree['degree']
     for k in range(k_fold) :
@@ -56,10 +69,18 @@ def cross_validation(y, x, k_indices, k_fold, method, **params):
             x_tr = x[tr_indice,:]
             
             # form data with polynomial degree
+           
             tx_tr = build_poly(x_tr, degree)
             tx_te = build_poly(x_te, degree)
-            tx_tr_std=_standardize(tx_tr[:,1:])
-            tx_te_std=_standardize(tx_te[:,1:])
+           
+            tx_tr_std=standardize(tx_tr)
+            tx_te_std=standardize(tx_te)
+         
+            
+        
+            tx_tr_std = add_offset(tx_tr_std)
+            tx_te_std = add_offset(tx_te_std)
+            
             
             w, loss = method(y_tr, tx_tr_std, **params_without_degree)
 
