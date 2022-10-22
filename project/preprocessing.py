@@ -19,14 +19,55 @@ Black listed columns ID - Name
 26 - PRI_jet_subleading_pt
 27 - PRI_jet_subleading_eta
 28 - PRI_jet_subleading_phi
+
+
 '''
+# -*------------------------- Features Engeneering ---------------------------------*-
+
+def add_offset(x): 
+    '''
+    Add a column of 1 to the feature matrix x
+    '''
+    return (np.c_[np.ones(x.shape[0]), x])
+
+
+def standardize(x):
+    '''
+    Standarize the data according the mean and the standard deviation
+    and take as an input the features matrix X
+    '''
+    centered_data = x - np.mean(x, axis=0)
+    std=np.std(centered_data, axis=0)
+    
+    std_data = centered_data[:,std>0] /std[std>0]
+    
+    std_0 = std[std <=0]
+    
+    if(len(std_0)>0) :
+        raise ValueError("DIVISION BY 0 : Find features with a 0 standard deviation")
+ 
+    
+    return std_data
+
+def build_poly(x, degree):
+    """polynomial basis functions for input data x, for j=0 up to j=degree."""
+    poly = np.ones((len(x),0))
+    
+   
+    for deg in range(1, degree+1):
+      
+        poly = np.c_[poly, np.power(x, deg)]   
+  
+    return poly
+
+# -*-------------------------  Data preprocessing ---------------------------------*-
 
 def preprocess_data(X_train, X_test, y_train):
     '''
     Preprocessing the data.
     Should be applied to the train and test sets separately
     '''
-    black_listed_columns  = [4, 5, 6, 22, 23, 24, 25, 26, 27, 28]
+    black_listed_columns  = [16,18, 22, 23, 24, 25, 26, 27, 28]
    
     ## First removing the black-listed columns the columns
     X_train, X_test = _remove_columns(X_train, X_test,  black_listed_columns)
@@ -40,6 +81,7 @@ def preprocess_data(X_train, X_test, y_train):
 
     return X_train, X_test, y_train
 
+# -*-------------------------  Methods - preprocessing ---------------------------------*-
 
 def _remove_columns(X_train, X_test, columns):
     '''
@@ -143,7 +185,8 @@ def _find_outliers(x, threshold=1.5, level=5):
     return outliers_index
 
 
-    
+
+
 if __name__ == "__main__":
     # For testing purposes
     x = np.random.rand(100,3)

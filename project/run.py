@@ -1,9 +1,9 @@
 from helpers import *
 from implementations import *
 from preprocessing import *
-from cross_val import *
+#from cross_val import *
 
-def run(method, degree, params):
+def run(method, params):
     PATH_TRAIN= '../data/train.csv'
     PATH_TEST = '../data/test.csv'
 
@@ -16,6 +16,8 @@ def run(method, degree, params):
     preprocessed_features_train,preprocessed_features_test,preprocessed_y = preprocess_data(features_train,features_test, target_train)
 
     
+    degree = params['degree']
+    del params['degree']
     
     ##Poly
     tx_tr = build_poly(preprocessed_features_train, degree)
@@ -25,17 +27,17 @@ def run(method, degree, params):
     tx_tr_std= standardize(tx_tr)
     tx_te_std= standardize(tx_te)
     
-    #Offset    
-    tx_tr_std =  add_offset(tx_tr_std)
-    tx_te_std =  add_offset(tx_te_std)
- 
-
-    print(params)
-    W, loss = method(preprocessed_y, tx_tr_std, **params)
+    #Offset 
+    offset=params['offset']
+    del params['offset']
     
-    print('train accuracy ', accuracy(preprocessed_y, predict(tx_tr_std,W)))
-        
+    if(offset):
+        tx_tr_std =  add_offset(tx_tr_std)
+        tx_te_std =  add_offset(tx_te_std)
+    
+    W, loss = method(preprocessed_y, tx_tr_std, **params)
     test_prediction = predict(tx_te_std, W)
+    
     create_csv_submission(id_test, np.sign(test_prediction), 'submission_test.csv')
 
 

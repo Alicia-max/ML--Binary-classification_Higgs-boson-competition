@@ -2,42 +2,8 @@
 
 import numpy as np
 from implementations import *
+from preprocessing import *
 
-def add_offset(x): 
-    '''
-    Add a column of 1 to the feature matrix x
-    '''
-    return (np.c_[np.ones(x.shape[0]), x])
-
-
-def standardize(x):
-    '''
-    Standarize the data according the mean and the standard deviation
-    and take as an input the features matrix X
-    '''
-    centered_data = x - np.mean(x, axis=0)
-    std=np.std(centered_data, axis=0)
-    
-    std_data = centered_data[:,std>0] /std[std>0]
-    
-    std_0 = std[std <=0]
-    
-    if(len(std_0)>0) :
-        raise ValueError("DIVISION BY 0 : There are features with standard deviation equal to 0")
- 
-    
-    return std_data
-
-def build_poly(x, degree):
-    """polynomial basis functions for input data x, for j=0 up to j=degree."""
-    poly = np.ones((len(x),0))
-    
-   
-    for deg in range(1, degree+1):
-      
-        poly = np.c_[poly, np.power(x, deg)]   
-  
-    return poly
 
 def build_k_indices(y, k_fold, seed):
     """build k indices for k-fold."""
@@ -47,14 +13,23 @@ def build_k_indices(y, k_fold, seed):
     indices = np.random.permutation(num_row)
     k_indices = [indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
     return np.array(k_indices)
-def cross_validation(y, x, k_indices, k_fold, method, **params):
+
+
+def cross_validation(y, x, k_indices, k_fold, method, log=False,  **params):
+    
     
     acc_tr_tmp=[]
     acc_te_tmp=[]
     
     degree = params['degree']
-    params_without_degree = params
-    del params_without_degree['degree']
+    offset = params['offset']
+    
+    params_without_degree_offset = params
+  
+    del params_without_degree_offset['degree']
+    del params_without_degree_offset['offset']
+   
+    
     for k in range(k_fold) :
           # get k'th subgroup in test, others in train
             te_indice = k_indices[k]
@@ -70,18 +45,33 @@ def cross_validation(y, x, k_indices, k_fold, method, **params):
             tx_tr = build_poly(x_tr, degree)
             tx_te = build_poly(x_te, degree)
             
-            w, loss = method(y_tr, tx_tr, **params_without_degree)
+            
+            std_tx_tr = standardize(tx_tr)
+            std_tx_te = standardize(tx_te)
+           
+            
+            if(offset): 
+                std_tx_tr = add_offset(std_tx_tr)
+                std_tx_te = add_offset(std_tx_te)
+            
+            w, loss = method(y_tr, std_tx_tr, **params_without_degree_offset)
+        
 
             #access accuracy
-            acc_tr_tmp.append(accuracy(y_tr, predict(tx_tr,w)))
-            acc_te_tmp.append(accuracy(y_te, predict(tx_te,w)))
+            if(log) : 
+                acc_tr_tmp.append(accuracy(y_tr, predict_log(std_tx_tr,w)))
+                acc_te_tmp.append(accuracy(y_te, predict_log(std_tx_te,w)))
+            
+            else : 
+                acc_tr_tmp.append(accuracy(y_tr, predict(std_tx_tr,w)))
+                acc_te_tmp.append(accuracy(y_te, predict(std_tx_te,w)))
        
     acc_tr=np.mean(acc_tr_tmp)
     acc_te=np.mean(acc_te_tmp)
             
     return acc_tr, acc_te
 
-def cross_tunning(y, x, k_fold, method, parameters, seed) :
+def cross_tunning(y, x, k_fold, method, parameters, seed, log = False) :
     
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
@@ -91,7 +81,7 @@ def cross_tunning(y, x, k_fold, method, parameters, seed) :
     acc_te = []
     
     for params in parameters:
-        acc_tr_, acc_te_ = cross_validation(y, x, k_indices, k_fold, method, **params)
+        acc_tr_, acc_te_ = cross_validation(y, x, k_indices, k_fold, method,log,  **params)
         acc_tr.append(acc_tr_)
         acc_te.append(acc_te_)    
     
