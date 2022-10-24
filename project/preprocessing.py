@@ -47,23 +47,25 @@ def add_offset(x):
     return (np.c_[np.ones(x.shape[0]), x])
 
 
-def standardize(x):
+def standardize(x, mean_x=None, std_x =None):
     '''
     Standarize the data according the mean and the standard deviation
     and take as an input the features matrix X
     '''
-    centered_data = x - np.mean(x, axis=0)
-    std=np.std(centered_data, axis=0)
     
-    std_data = centered_data[:,std>0] /std[std>0]
-    
-    std_0 = std[std <=0]
-    
-    if(len(std_0)>0) :
+    if (mean_x is None): 
+        mean_x = np.mean(x, axis=0)
+    if (std_x is None) : 
+        std_x = np.std(x, axis=0)
+        
+    centered_data = x - mean_x
+    std_data =centered_data[:,std_x>0] /std_x[std_x>0]
+
+    if(len(std_x[std_x <=0])>0) :
         raise ValueError("DIVISION BY 0 : Find features with a 0 standard deviation")
  
     
-    return std_data
+    return std_data, mean_x, std_x
 
 def build_poly(x, degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
@@ -241,9 +243,9 @@ def _fill_missing_values(X_train,X_test, threshold = .8):
         if miss_perc > threshold:
             discarded_cols.append(j)
         else:
-            mean = np.median(feat[feat!=-999.0])
-            X_train[:,j] = np.where(feat == -999.0, mean, X_train[:,j])
-            X_test[:,j] = np.where(X_test[:,j]==-999.0, mean, X_test[:,j])
+            med = np.median(feat[feat!=-999.0])
+            X_train[:,j] = np.where(feat == -999.0, med, X_train[:,j])
+            X_test[:,j] = np.where(X_test[:,j]==-999.0, med, X_test[:,j])
     
     X_train, X_test = _remove_columns(X_train, X_test, discarded_cols)
 

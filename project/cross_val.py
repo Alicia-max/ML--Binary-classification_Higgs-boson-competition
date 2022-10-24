@@ -47,8 +47,8 @@ def cross_validation(y, x, k_indices, k_fold, method, log=False,  **params):
             tx_te = build_poly(x_te, degree)
             
             
-            std_tx_tr = standardize(tx_tr)
-            std_tx_te = standardize(tx_te)
+            std_tx_tr, mean_tx, std_tx = standardize(tx_tr)
+            std_tx_te,mean_te, std_te= standardize(tx_te,mean_tx, std_tx)
            
             
             if(offset): 
