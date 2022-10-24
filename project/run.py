@@ -42,5 +42,4 @@ def run(method, params):
 
 
 if __name__ == "__main__":
-    set_seed(1)
     run()

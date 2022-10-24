@@ -62,7 +62,7 @@ def compute_mse(y, tx, w):
     mse = (e**2/(2*len(e)))
     return mse
 
-def compute_rmse (y,tx,w) : 
+def compute_rmse(y, tx, w) : 
     """
     Compute and return the Root Mean Square Error. 
     Input 
@@ -70,7 +70,7 @@ def compute_rmse (y,tx,w) :
         - x:  data Matrix
         - w : features vectors
         """
-    mse = compute_mse(y,tx,w)
+    mse = compute_mse(y, tx, w)
     return np.sqrt(2*mse)
 
 def calculate_loss_log(y, tx, w):
@@ -152,8 +152,8 @@ def predict_log(x, w):
         - w : weights derived from the model
     """
     y_pred= sigmoid(np.matmul(x, w))
-    y_pred[np.where(y_pred<0)]=-1
-    y_pred[np.where(y_pred>=0)]=1
+    y_pred[np.where(y_pred<.5)]=-1
+    y_pred[np.where(y_pred>=.5)]=1
     return y_pred
 
 # -*------------------------- METHODS---------------------------------*-

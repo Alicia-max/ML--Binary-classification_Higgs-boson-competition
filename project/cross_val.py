@@ -16,8 +16,9 @@ def build_k_indices(y, k_fold, seed):
 
 
 def cross_validation(y, x, k_indices, k_fold, method, log=False,  **params):
-    
-    
+    '''
+    TODO
+    ''' 
     acc_tr_tmp=[]
     acc_te_tmp=[]
     
@@ -72,7 +73,9 @@ def cross_validation(y, x, k_indices, k_fold, method, log=False,  **params):
     return acc_tr, acc_te
 
 def cross_tunning(y, x, k_fold, method, parameters, seed, log = False) :
-    
+    '''
+    TODO
+    '''
     # split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
     

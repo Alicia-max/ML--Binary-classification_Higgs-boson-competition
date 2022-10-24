@@ -1,16 +1,33 @@
 import numpy as np
-
 '''
-Black listed columns ID - Name
+Columns ID - Name
+
+0 - DER_mass_MMC
+1 - DER_mass_transverse_met_lep
+2 - DER_mass_vis
+3 - DER_pt_h
 
 4 - DER_deltaeta_jet_jet
 5 - DER_mass_jet_jet
 6 - DER_prodeta_jet_jet
 
-15 - PRI_tau_phi NOT SURE YET
-18 - PRI_lep_phi NOT SURE YET
-20 - PRI_met_phi NOT SURE YET
+7 - DER_delta_tau_lep
+8 - DER_pt_tot
+9 - DER_sum_pt
+10 - DER_pt_ratio
+11 - DER_met_phi_centrality
+12 - DER_lep_eta_centrality
 
+13 - PRI_tau_eta
+14 - PRI_tau_phi
+
+15 - PRI_tau_phi NOT SURE YET
+16 - PRI_lep_eta
+17 - PRI_lep_phi
+18 - PRI_lep_phi NOT SURE YET
+19 - 
+20 - PRI_met_phi NOT SURE YET
+21 - 
 22 - PRI_jet_num
 
 23 - PRI_jet_leading_pt
@@ -19,8 +36,7 @@ Black listed columns ID - Name
 26 - PRI_jet_subleading_pt
 27 - PRI_jet_subleading_eta
 28 - PRI_jet_subleading_phi
-
-
+29 - PRI_jet_all_pt
 '''
 # -*------------------------- Features Engeneering ---------------------------------*-
 
@@ -81,7 +97,116 @@ def preprocess_data(X_train, X_test, y_train):
 
     return X_train, X_test, y_train
 
+
+def preprocess_data_new(X_train, X_test, y_train, sampling_strategy=None):
+    '''
+    Testing preprocessing by subdividing into jet numbers
+    '''
+    jet_num_train = X_train[:, 22]
+    jet_num_test = X_test[:, 22]
+
+    # Still do not know if we should divide into 3 or 4 groups.
+    def divide_into_subgroups(x, jet_num):
+        x_groups = {
+            'group_0': x[jet_num == 0.],
+            'group_1': x[jet_num == 1.],
+            'group_2': x[jet_num == 2.],
+            'group_3': x[jet_num == 3.]
+        }
+        masks = {
+            'group_0': jet_num == 0.,
+            'group_1': jet_num == 1.,
+            'group_2': jet_num == 2.,
+            'group_3': jet_num == 3.
+        }
+        return x_groups, masks
+    X_train_groups , _= divide_into_subgroups(X_train, jet_num_train)
+    y_train_groups, _ = divide_into_subgroups(y_train, jet_num_train)
+    X_test_groups, masks = divide_into_subgroups(X_test, jet_num_test)
+    # TODO
+    black_listed_columns = {
+        'group_0': [4, 5, 6, 22, 23, 24, 25, 26, 27, 28, 29],
+        'group_1': [4, 5, 6, 22, 26, 27, 28],
+        'group_2': [22],
+        'group_3': [22]
+    }
+    for group in X_train_groups.keys():
+        ## First removing the black-listed columns the columns
+        X_train_groups[group], X_test_groups[group] = _remove_columns(
+             X_train_groups[group],
+             X_test_groups[group],
+             black_listed_columns[group]
+        ) 
+    
+        ## Filling the missing values with the median of each sets
+        X_train_groups[group] , X_test_groups[group] = _fill_missing_values(
+            X_train_groups[group],
+            X_test_groups[group]
+        )
+        
+        ## Remove outliers on the training set only
+        X_train_groups[group], y_train_groups[group] = _remove_outlier(
+            X_train_groups[group],
+            y_train_groups[group],
+            threshold = 1.5,
+            level = 5
+        )
+        ## Over/Under/None sampling, according to the chosen method
+        ## Only for the training set, obviously
+        if sampling_strategy == 'over':
+            X_train_groups[group], y_train_groups[group] = _random_over_sampling(
+                X_train_groups[group],
+                y_train_groups[group],
+                seed = 1
+            )
+        elif sampling_strategy == 'under':
+            X_train_groups[group], y_train_groups[group] = _random_under_sampling(
+                X_train_groups[group],
+                y_train_groups[group],
+                seed = 1
+            )
+
+    ## Should return dictonaries with group as keys
+    return X_train_groups, X_test_groups, y_train_groups, masks
+
 # -*-------------------------  Methods - preprocessing ---------------------------------*-
+def _random_over_sampling(x, y, seed):
+    '''
+    Over sampling for an unbalanced dataset
+    '''
+    diff = len(y[y == -1.]) - len(y[y == 1.])
+    sampling_nb = np.abs(diff)
+    sampling_class = np.sign(diff)
+    indices = np.array([i for i, y_ in enumerate(y) if y_ == sampling_class])
+
+    # Setting seed for reproducability
+    np.random.seed(seed)
+    np.random.shuffle(indices)
+
+    x = np.concatenate((x, x[indices[:sampling_nb], :]))
+    y = np.concatenate((y, y[indices[:sampling_nb]]))
+    # If the sampling is not 50/50 yet, in the case a class has more than twice the nb of elements in the other class
+    if sampling_nb > len(indices):
+        return _random_over_sampling(x, y, seed)
+    return x, y
+
+def _random_under_sampling(x, y, seed):
+    '''
+    Under sampling for an unbalanced dataset
+    '''
+    diff = len(y[y == 1.]) - len(y[y == -1.])
+    sampling_nb = np.abs(diff)
+    sampling_class = np.sign(diff)
+    indices = np.array([i for i, y_ in enumerate(y) if y_ == sampling_class])
+    
+    # Setting seed for reproducability
+    np.random.seed(seed)
+    np.random.shuffle(indices)
+    
+    kept_indices = np.delete(np.arange(len(y)), indices[:sampling_nb])
+    print(x[kept_indices, :], y[kept_indices])
+    return x[kept_indices, :], y[kept_indices]
+ 
 
 def _remove_columns(X_train, X_test, columns):
     '''
@@ -191,6 +316,6 @@ if __name__ == "__main__":
     # For testing purposes
     x = np.random.rand(100,3)
     print(x)
-    print(_standardize(x))
+    print(standardize(x))
     print(_remove_columns(x, [1]))
     ## OKAY IT WORKS LEZGOOOOOOOOOO
