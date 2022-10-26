@@ -70,25 +70,31 @@ def standardize(x, mean_x=None, std_x =None):
 def build_poly(x, degree):
     """polynomial basis functions for input data x, for j=0 up to j=degree."""
     poly = np.ones((len(x),0))
-    
-   
     for deg in range(1, degree+1):
       
         poly = np.c_[poly, np.power(x, deg)]   
   
     return poly
 
+def fourier_encoding(x, n):
+    """
+    Fourier encoding (todo)
+    """
+    out = np.ones((len(x),0))
+
+    for n_ in range(1, n+1):
+        out = np.c_[out, np.cos(np.power(2*np.pi,n_)*x), np.sin(np.power(2*np.pi,n_)*x)]
+    return out
 # -*-------------------------  Data preprocessing ---------------------------------*-
 
-def preprocess_data(X_train, X_test, y_train):
+def preprocess_data(X_train, X_test, y_train, Jet_Features=None):
     '''
     Preprocessing the data.
     Should be applied to the train and test sets separately
     '''
-    black_listed_columns  = [16,18, 22, 23, 24, 25, 26, 27, 28]
-   
-    ## First removing the black-listed columns the columns
-    X_train, X_test = _remove_columns(X_train, X_test,  black_listed_columns)
+    if(Jet_Features is not None) : 
+        ## Removing the Jet related features
+        X_train, X_test = _remove_columns(X_train, X_test, Jet_Features)
    
     
     ## Filling the missing values with the median of each sets
@@ -237,14 +243,19 @@ def _fill_missing_values(X_train,X_test, threshold = .8):
     #Check missing value according the features 
     for j in range(X_train.shape[1]) : 
         feat = X_train[:,j]
+        
         #check % of missing value per col
         miss_perc = len(feat[feat==-999.0])/len(feat)
         if miss_perc > threshold:
             discarded_cols.append(j)
+            print('Feature number', j, 'is removed')
+            
         else:
+            
             med = np.median(feat[feat!=-999.0])
             X_train[:,j] = np.where(feat == -999.0, med, X_train[:,j])
             X_test[:,j] = np.where(X_test[:,j]==-999.0, med, X_test[:,j])
+    
     
     X_train, X_test = _remove_columns(X_train, X_test, discarded_cols)
 

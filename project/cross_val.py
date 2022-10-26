@@ -24,11 +24,13 @@ def cross_validation(y, x, k_indices, k_fold, method, log=False,  **params):
     
     degree = params['degree']
     offset = params['offset']
+    fourier=params['fourier']
     
     params_without_degree_offset = params
   
     del params_without_degree_offset['degree']
     del params_without_degree_offset['offset']
+    del params_without_degree_offset['fourier']
    
     
     for k in range(k_fold) :
@@ -49,6 +51,10 @@ def cross_validation(y, x, k_indices, k_fold, method, log=False,  **params):
             
             std_tx_tr, mean_tx, std_tx = standardize(tx_tr)
             std_tx_te,mean_te, std_te= standardize(tx_te,mean_tx, std_tx)
+            
+            # cos & sin transfo
+            std_tx_tr = fourier_encoding(std_tx_tr, fourier)
+            std_tx_te = fourier_encoding(std_tx_te, fourier)
            
             
             if(offset): 
