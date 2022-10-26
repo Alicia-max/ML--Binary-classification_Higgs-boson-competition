@@ -35,8 +35,8 @@ def run(method, params):
         tx_te = build_poly(preprocessed_features_test[group], degree)
 
         ##standarization
-        tx_tr_std= standardize(tx_tr)
-        tx_te_std= standardize(tx_te)
+        tx_tr_std, mean, std= standardize(tx_tr)
+        tx_te_std, _, _= standardize(tx_te, mean, std)
         
         if(offset):
             tx_tr_std =  add_offset(tx_tr_std)
@@ -45,13 +45,12 @@ def run(method, params):
         W, loss = method(preprocessed_y[group], tx_tr_std, **params)
         test_prediction[test_masks[group]] = predict(tx_te_std, W)
 
-    create_csv_submission(id_test, np.sign(test_prediction), 'submission_test_nosampling.csv')
+    create_csv_submission(id_test, np.sign(test_prediction), 'submission_nosampling_leasqsuares.csv')
 
 
 if __name__ == "__main__":
     params = {
         'offset': True,
         'degree': 8,
-        'lambda_': 1e-6
     }
-    run(ridge_regression, params)
+    run(least_squares, params)

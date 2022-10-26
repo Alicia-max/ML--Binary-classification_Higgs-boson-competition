@@ -206,7 +206,6 @@ def _random_under_sampling(x, y, seed):
     np.random.shuffle(indices)
     
     kept_indices = np.delete(np.arange(len(y)), indices[:sampling_nb])
-    print(x[kept_indices, :], y[kept_indices])
     return x[kept_indices, :], y[kept_indices]
  
 

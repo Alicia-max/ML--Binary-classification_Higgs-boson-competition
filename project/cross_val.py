@@ -66,11 +66,8 @@ def cross_validation(y, x, k_indices, k_fold, method, log=False,  **params):
             else : 
                 acc_tr_tmp.append(accuracy(y_tr, predict(std_tx_tr,w)))
                 acc_te_tmp.append(accuracy(y_te, predict(std_tx_te,w)))
-       
-    acc_tr=np.mean(acc_tr_tmp)
-    acc_te=np.mean(acc_te_tmp)
             
-    return acc_tr, acc_te
+    return acc_tr_tmp, acc_te_tmp
 
 def cross_tunning(y, x, k_fold, method, parameters, seed, log = False) :
     '''
@@ -81,13 +78,17 @@ def cross_tunning(y, x, k_fold, method, parameters, seed, log = False) :
     
     # define lists to store the loss of training data and test data
     acc_tr = []
+    std_tr = []
     acc_te = []
+    std_te = []
     
     for params in parameters:
         acc_tr_, acc_te_ = cross_validation(y, x, k_indices, k_fold, method,log,  **params)
-        acc_tr.append(acc_tr_)
-        acc_te.append(acc_te_)    
+        acc_tr.append(np.mean(acc_tr_))
+        std_tr.append(np.std(acc_tr_))
+        acc_te.append(np.mean(acc_te_))
+        std_te.append(np.std(acc_te_))
     
-    idx_best =  np.argmax(acc_te)      
+    idx_best =  np.argsort(-np.array(acc_te)) # Theminus sign here to get in descending order
         
-    return acc_tr, acc_te,  idx_best
+    return acc_tr, acc_te, std_tr, std_te, idx_best

@@ -1,0 +1,1234 @@
+Setting up Parameter Scan
+Loading data
+Data succesfully loaded
+Starting parameter scan for: Group group_1, sampling strategy None and offset True
+--------------------------
+
+Method: Least squares GD
+Ranked 1
+Parameters
+ {'gamma': 0.1, 'degree': 2, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.748114689709348 std 0.0031993255023675077
+
+
+Ranked 2
+Parameters
+ {'gamma': 0.1, 'degree': 3, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.7479575805184604 std 0.004518008597180428
+
+
+Ranked 3
+Parameters
+ {'gamma': 0.1, 'degree': 4, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.743414506415292 std 0.0075925498802775285
+
+
+Ranked 4
+Parameters
+ {'gamma': 0.1, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.7137863315003928 std 0.003521207245929118
+
+
+Ranked 5
+Parameters
+ {'gamma': 0.1, 'degree': 9, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.6228593872741555 std 0.0035671533287933606
+
+
+--------------------------
+
+Method: Least squares SGD
+Ranked 1
+Parameters
+ {'gamma': 0.01, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5785284105786854 std 0.01391224827064899
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-06, 'degree': 3, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5696779261586803 std 0.012181071493918293
+
+
+Ranked 3
+Parameters
+ {'gamma': 0.01, 'degree': 2, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5696124639958104 std 0.0318944556189479
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'degree': 5, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5683032207384132 std 0.010408327444679977
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-08, 'degree': 7, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.566928515318146 std 0.004897794857062025
+
+
+--------------------------
+
+Method: Least squares
+Ranked 1
+Parameters
+ {'degree': 9, 'offset': True}
+With validation accuracy 0.8068342498036134 std 0.0028044711809292527
+
+
+Ranked 2
+Parameters
+ {'degree': 8, 'offset': True}
+With validation accuracy 0.8059570568211573 std 0.002687745990124387
+
+
+Ranked 3
+Parameters
+ {'degree': 7, 'offset': True}
+With validation accuracy 0.8036004189578424 std 0.003052362441114395
+
+
+Ranked 4
+Parameters
+ {'degree': 6, 'offset': True}
+With validation accuracy 0.8034302173343807 std 0.0030478665629277645
+
+
+Ranked 5
+Parameters
+ {'degree': 5, 'offset': True}
+With validation accuracy 0.7998036135113904 std 0.0031135225085864335
+
+
+--------------------------
+
+Method: Ridge Regression
+Ranked 1
+Parameters
+ {'lambda_': 1e-08, 'degree': 9, 'offset': True}
+With validation accuracy 0.8042026708562451 std 0.003401261788603398
+
+
+Ranked 2
+Parameters
+ {'lambda_': 1e-08, 'degree': 8, 'offset': True}
+With validation accuracy 0.8041764859910971 std 0.0032263218069950215
+
+
+Ranked 3
+Parameters
+ {'lambda_': 1e-08, 'degree': 7, 'offset': True}
+With validation accuracy 0.8039539146373397 std 0.002959700686241376
+
+
+Ranked 4
+Parameters
+ {'lambda_': 1e-07, 'degree': 8, 'offset': True}
+With validation accuracy 0.803351662738937 std 0.0036938297930520837
+
+
+Ranked 5
+Parameters
+ {'lambda_': 1e-07, 'degree': 9, 'offset': True}
+With validation accuracy 0.8033254778737889 std 0.0036444497546942443
+
+
+--------------------------
+
+Method: Logistic Regression
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7746268656716417 std 0.002221242216333961
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'degree': 5, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7734616391725583 std 0.0016160538490923482
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'degree': 6, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7719429169939774 std 0.0015214285463559971
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'degree': 3, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7713275726630009 std 0.003733846084819229
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'degree': 7, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7708824299554857 std 0.0013013640890064742
+
+
+--------------------------
+
+Method: Regularized Logistic Regression
+
+Fixing the learning rate gamma to the values of the best from logistic - otherwise too long
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-07, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7746268656716417 std 0.002221242216333961
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-06, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7746268656716417 std 0.002221242216333961
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-05, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7746268656716417 std 0.002221242216333961
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.0001, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7746268656716417 std 0.002221242216333961
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.001, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7746268656716417 std 0.002221242216333961
+
+
+--------------------------
+Best method: Least square
+
+--------------------------
+Starting parameter scan for: Group group_1, sampling strategy under and offset True
+--------------------------
+
+Method: Least squares GD
+Ranked 1
+Parameters
+ {'gamma': 0.1, 'degree': 2, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.7395642621750275 std 0.0033459661081100497
+
+
+Ranked 2
+Parameters
+ {'gamma': 0.1, 'degree': 3, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.737275723178323 std 0.00540544965992949
+
+
+Ranked 3
+Parameters
+ {'gamma': 0.1, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.7063163676309043 std 0.003992471557745231
+
+
+Ranked 4
+Parameters
+ {'gamma': 0.1, 'degree': 4, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.6322409373855731 std 0.014793931769079274
+
+
+Ranked 5
+Parameters
+ {'gamma': 0.01, 'degree': 8, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.6291834492859758 std 0.010572221899171978
+
+
+--------------------------
+
+Method: Least squares SGD
+Ranked 1
+Parameters
+ {'gamma': 0.01, 'degree': 2, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5808495056755767 std 0.02476339802339101
+
+
+Ranked 2
+Parameters
+ {'gamma': 0.01, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5704503844745515 std 0.03204025735465896
+
+
+Ranked 3
+Parameters
+ {'gamma': 0.0001, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5697546686195534 std 0.020068198331611498
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-07, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5693152691321861 std 0.02031788791229906
+
+
+Ranked 5
+Parameters
+ {'gamma': 0.001, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5647198828268034 std 0.032000446928181964
+
+
+--------------------------
+
+Method: Least squares
+Ranked 1
+Parameters
+ {'degree': 9, 'offset': True}
+With validation accuracy 0.7943244232881728 std 0.003599993322923611
+
+
+Ranked 2
+Parameters
+ {'degree': 8, 'offset': True}
+With validation accuracy 0.7936103991212011 std 0.004021832359647323
+
+
+Ranked 3
+Parameters
+ {'degree': 7, 'offset': True}
+With validation accuracy 0.7916880263639692 std 0.004115340394345491
+
+
+Ranked 4
+Parameters
+ {'degree': 6, 'offset': True}
+With validation accuracy 0.7912120102526548 std 0.004602055611384832
+
+
+Ranked 5
+Parameters
+ {'degree': 5, 'offset': True}
+With validation accuracy 0.786872940314903 std 0.0042522606499843085
+
+
+--------------------------
+
+Method: Ridge Regression
+Ranked 1
+Parameters
+ {'lambda_': 1e-08, 'degree': 9, 'offset': True}
+With validation accuracy 0.7920175759794947 std 0.003833395043076499
+
+
+Ranked 2
+Parameters
+ {'lambda_': 1e-08, 'degree': 7, 'offset': True}
+With validation accuracy 0.7917612596118638 std 0.0042348831328600425
+
+
+Ranked 3
+Parameters
+ {'lambda_': 1e-08, 'degree': 8, 'offset': True}
+With validation accuracy 0.7915781764921276 std 0.004134761109262856
+
+
+Ranked 4
+Parameters
+ {'lambda_': 1e-07, 'degree': 7, 'offset': True}
+With validation accuracy 0.7913584767484438 std 0.004403291763665971
+
+
+Ranked 5
+Parameters
+ {'lambda_': 1e-07, 'degree': 8, 'offset': True}
+With validation accuracy 0.7913584767484438 std 0.004191124125211062
+
+
+--------------------------
+
+Method: Logistic Regression
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'degree': 6, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7618271695349688 std 0.005183354406768517
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'degree': 5, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7616074697912854 std 0.005403713088788246
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'degree': 7, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7615342365433907 std 0.004264304173874835
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'degree': 8, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7603075796411571 std 0.004546437167950395
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'degree': 9, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7601794214573416 std 0.004500419937879622
+
+
+--------------------------
+
+Method: Regularized Logistic Regression
+
+Fixing the learning rate gamma to the values of the best from logistic - otherwise too long
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-08, 'degree': 6, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7618271695349688 std 0.005183354406768517
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-07, 'degree': 6, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7618271695349688 std 0.005183354406768517
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-06, 'degree': 6, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7618271695349688 std 0.005183354406768517
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-05, 'degree': 6, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7618271695349688 std 0.005183354406768517
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.0001, 'degree': 6, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7618271695349688 std 0.005183354406768517
+
+
+--------------------------
+Best method: Least square
+
+--------------------------
+Starting parameter scan for: Group group_1, sampling strategy over and offset True
+--------------------------
+
+Method: Least squares GD
+Ranked 1
+Parameters
+ {'gamma': 0.1, 'degree': 2, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.7404116568167922 std 0.006914957427494925
+
+
+Ranked 2
+Parameters
+ {'gamma': 0.1, 'degree': 3, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.7372325249643367 std 0.0029927729983447726
+
+
+Ranked 3
+Parameters
+ {'gamma': 0.1, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.703128184226615 std 0.0029944030963445544
+
+
+Ranked 4
+Parameters
+ {'gamma': 0.1, 'degree': 4, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.6365090686773996 std 0.012241797482703409
+
+
+Ranked 5
+Parameters
+ {'gamma': 0.01, 'degree': 8, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.6235276136132056 std 0.016104498593096615
+
+
+--------------------------
+
+Method: Least squares SGD
+Ranked 1
+Parameters
+ {'gamma': 0.01, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.6042694110454454 std 0.018744949159223773
+
+
+Ranked 2
+Parameters
+ {'gamma': 0.01, 'degree': 2, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5823415528836355 std 0.0479459268961792
+
+
+Ranked 3
+Parameters
+ {'gamma': 0.0001, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5624006521296108 std 0.01954377489957744
+
+
+Ranked 4
+Parameters
+ {'gamma': 0.001, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5622987568779296 std 0.020154700481758714
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-07, 'degree': 1, 'max_iters': 100, 'offset': True}
+With validation accuracy 0.5580701039331567 std 0.035303968280257066
+
+
+--------------------------
+
+Method: Least squares
+Ranked 1
+Parameters
+ {'degree': 9, 'offset': True}
+With validation accuracy 0.7947727735887506 std 0.0033290911241547726
+
+
+Ranked 2
+Parameters
+ {'degree': 8, 'offset': True}
+With validation accuracy 0.7940085592011412 std 0.0032134021049580403
+
+
+Ranked 3
+Parameters
+ {'degree': 6, 'offset': True}
+With validation accuracy 0.7917159160383125 std 0.0029052478799080753
+
+
+Ranked 4
+Parameters
+ {'degree': 7, 'offset': True}
+With validation accuracy 0.7917159160383125 std 0.00318418993253785
+
+
+Ranked 5
+Parameters
+ {'degree': 5, 'offset': True}
+With validation accuracy 0.7866313429794172 std 0.0026693833409449875
+
+
+--------------------------
+
+Method: Ridge Regression
+Ranked 1
+Parameters
+ {'lambda_': 1e-08, 'degree': 9, 'offset': True}
+With validation accuracy 0.7918993274913388 std 0.0032526139047673363
+
+
+Ranked 2
+Parameters
+ {'lambda_': 1e-08, 'degree': 7, 'offset': True}
+With validation accuracy 0.791746484613817 std 0.003235491143661684
+
+
+Ranked 3
+Parameters
+ {'lambda_': 1e-08, 'degree': 8, 'offset': True}
+With validation accuracy 0.7916038312614633 std 0.0033139619393280787
+
+
+Ranked 4
+Parameters
+ {'lambda_': 1e-07, 'degree': 9, 'offset': True}
+With validation accuracy 0.7912981455064194 std 0.003100128494994784
+
+
+Ranked 5
+Parameters
+ {'lambda_': 1e-08, 'degree': 6, 'offset': True}
+With validation accuracy 0.7911453026288975 std 0.003209393110107743
+
+
+--------------------------
+
+Method: Logistic Regression
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7626553902588139 std 0.0033997912265031956
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'degree': 3, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7624821683309557 std 0.0037434545987378672
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'degree': 5, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7607295700020379 std 0.003582976683853744
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'degree': 6, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7582637049113511 std 0.0029611748919762164
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'degree': 9, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7578866924801304 std 0.0028056187276317103
+
+
+--------------------------
+
+Method: Regularized Logistic Regression
+
+Fixing the learning rate gamma to the values of the best from logistic - otherwise too long
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.001, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7626553902588139 std 0.0033997912265031956
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.0001, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7626553902588139 std 0.0033997912265031956
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-05, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7626553902588139 std 0.0033997912265031956
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-06, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7626553902588139 std 0.0033997912265031956
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-07, 'degree': 4, 'max_iters': 100, 'offset': True, 'initial_w': None}
+With validation accuracy 0.7626553902588139 std 0.0033997912265031956
+
+
+--------------------------
+Best method: Least square
+
+--------------------------
+Starting parameter scan for: Group group_1, sampling strategy None and offset False
+--------------------------
+
+Method: Least squares GD
+Ranked 1
+Parameters
+ {'gamma': 0.1, 'degree': 4, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.7032862005760669 std 0.004842890632139737
+
+
+Ranked 2
+Parameters
+ {'gamma': 0.1, 'degree': 2, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.7026839486776643 std 0.01041135724748013
+
+
+Ranked 3
+Parameters
+ {'gamma': 0.1, 'degree': 3, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.7022257135375753 std 0.005102589787274167
+
+
+Ranked 4
+Parameters
+ {'gamma': 0.1, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.6766692851531815 std 0.005502156123139195
+
+
+Ranked 5
+Parameters
+ {'gamma': 0.1, 'degree': 9, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.6228593872741555 std 0.0035671533287933606
+
+
+--------------------------
+
+Method: Least squares SGD
+Ranked 1
+Parameters
+ {'gamma': 0.001, 'degree': 9, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5728462948415816 std 0.02975269057379315
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-08, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5713930348258706 std 0.012440883841955226
+
+
+Ranked 3
+Parameters
+ {'gamma': 0.01, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5713537575281487 std 0.04482235928386291
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5703718250851008 std 0.016668111605426875
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-08, 'degree': 2, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5702147158942131 std 0.015728126214690528
+
+
+--------------------------
+
+Method: Least squares
+Ranked 1
+Parameters
+ {'degree': 9, 'offset': False}
+With validation accuracy 0.7674260277559571 std 0.0019844431157465627
+
+
+Ranked 2
+Parameters
+ {'degree': 8, 'offset': False}
+With validation accuracy 0.7662346163917256 std 0.0019370606852937577
+
+
+Ranked 3
+Parameters
+ {'degree': 7, 'offset': False}
+With validation accuracy 0.7589945011783189 std 0.0026724602282304035
+
+
+Ranked 4
+Parameters
+ {'degree': 6, 'offset': False}
+With validation accuracy 0.7559046870908613 std 0.0031534558227288407
+
+
+Ranked 5
+Parameters
+ {'degree': 5, 'offset': False}
+With validation accuracy 0.7511128567687877 std 0.002902566022177973
+
+
+--------------------------
+
+Method: Ridge Regression
+Ranked 1
+Parameters
+ {'lambda_': 1e-08, 'degree': 9, 'offset': False}
+With validation accuracy 0.7580911233307148 std 0.002560767358658832
+
+
+Ranked 2
+Parameters
+ {'lambda_': 1e-08, 'degree': 8, 'offset': False}
+With validation accuracy 0.7571877454831107 std 0.0027310826901971092
+
+
+Ranked 3
+Parameters
+ {'lambda_': 1e-07, 'degree': 9, 'offset': False}
+With validation accuracy 0.7567556952081698 std 0.0030368799757380005
+
+
+Ranked 4
+Parameters
+ {'lambda_': 1e-08, 'degree': 7, 'offset': False}
+With validation accuracy 0.7565593087195601 std 0.00300767116597104
+
+
+Ranked 5
+Parameters
+ {'lambda_': 1e-07, 'degree': 8, 'offset': False}
+With validation accuracy 0.7563760146635244 std 0.0027267485827588123
+
+
+--------------------------
+
+Method: Logistic Regression
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.715043205027494 std 0.005283408948410865
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'degree': 2, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7124901806755695 std 0.0058432452105257274
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'degree': 4, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7123461639172558 std 0.005545445058736257
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'degree': 9, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7115606179628176 std 0.004561994208297141
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'degree': 8, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7110631055250065 std 0.004319986956127088
+
+
+--------------------------
+
+Method: Regularized Logistic Regression
+
+Fixing the learning rate gamma to the values of the best from logistic - otherwise too long
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-08, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.715043205027494 std 0.005283408948410865
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.01, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.715043205027494 std 0.005283408948410865
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.001, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.715043205027494 std 0.005283408948410865
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.0001, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.715043205027494 std 0.005283408948410865
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-05, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.715043205027494 std 0.005283408948410865
+
+
+--------------------------
+Best method: Least square
+
+--------------------------
+Starting parameter scan for: Group group_1, sampling strategy under and offset False
+--------------------------
+
+Method: Least squares GD
+Ranked 1
+Parameters
+ {'gamma': 0.1, 'degree': 2, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.7365433906993776 std 0.00634641202293471
+
+
+Ranked 2
+Parameters
+ {'gamma': 0.1, 'degree': 3, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.7347125595020139 std 0.010110266955894336
+
+
+Ranked 3
+Parameters
+ {'gamma': 0.1, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.7042475283778835 std 0.004538615398247351
+
+
+Ranked 4
+Parameters
+ {'gamma': 0.1, 'degree': 4, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.6384291468326619 std 0.014399507735683851
+
+
+Ranked 5
+Parameters
+ {'gamma': 0.01, 'degree': 8, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.627810325887953 std 0.020415812039590867
+
+
+--------------------------
+
+Method: Least squares SGD
+Ranked 1
+Parameters
+ {'gamma': 0.01, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.588831929696082 std 0.029217370012805877
+
+
+Ranked 2
+Parameters
+ {'gamma': 0.01, 'degree': 2, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5755217868912487 std 0.028009144464855838
+
+
+Ranked 3
+Parameters
+ {'gamma': 0.01, 'degree': 4, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5591724642987916 std 0.05641362839135191
+
+
+Ranked 4
+Parameters
+ {'gamma': 0.0001, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5570853167337971 std 0.01844707574657582
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-07, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5553643354082755 std 0.015781233928815447
+
+
+--------------------------
+
+Method: Least squares
+Ranked 1
+Parameters
+ {'degree': 9, 'offset': False}
+With validation accuracy 0.7943793482240938 std 0.0037428745696882065
+
+
+Ranked 2
+Parameters
+ {'degree': 8, 'offset': False}
+With validation accuracy 0.7935737824972537 std 0.0043383359981958285
+
+
+Ranked 3
+Parameters
+ {'degree': 7, 'offset': False}
+With validation accuracy 0.7915598681801539 std 0.0042279914076294115
+
+
+Ranked 4
+Parameters
+ {'degree': 6, 'offset': False}
+With validation accuracy 0.7911204686927865 std 0.004759245609509004
+
+
+Ranked 5
+Parameters
+ {'degree': 5, 'offset': False}
+With validation accuracy 0.7868546320029294 std 0.004333156262903567
+
+
+--------------------------
+
+Method: Ridge Regression
+Ranked 1
+Parameters
+ {'lambda_': 1e-08, 'degree': 9, 'offset': False}
+With validation accuracy 0.7924203588429147 std 0.004179992514472948
+
+
+Ranked 2
+Parameters
+ {'lambda_': 1e-08, 'degree': 8, 'offset': False}
+With validation accuracy 0.7915415598681802 std 0.004250289510261502
+
+
+Ranked 3
+Parameters
+ {'lambda_': 1e-07, 'degree': 9, 'offset': False}
+With validation accuracy 0.7914317099963384 std 0.004164728513584896
+
+
+Ranked 4
+Parameters
+ {'lambda_': 1e-08, 'degree': 7, 'offset': False}
+With validation accuracy 0.7913035518125229 std 0.0044400581994690855
+
+
+Ranked 5
+Parameters
+ {'lambda_': 1e-07, 'degree': 7, 'offset': False}
+With validation accuracy 0.7912852435005492 std 0.004371432982483035
+
+
+--------------------------
+
+Method: Logistic Regression
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'degree': 6, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7567557671182716 std 0.005062637256010072
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'degree': 7, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.756389600878799 std 0.004808991023034996
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'degree': 5, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.755986818015379 std 0.004995385261831338
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'degree': 4, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7556389600878799 std 0.0047543834468814754
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'degree': 8, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7556206517759063 std 0.005193110010479162
+
+
+--------------------------
+
+Method: Regularized Logistic Regression
+
+Fixing the learning rate gamma to the values of the best from logistic - otherwise too long
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.001, 'degree': 6, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7567557671182716 std 0.005062637256010072
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-05, 'degree': 6, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7567557671182716 std 0.005062637256010072
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-06, 'degree': 6, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7567557671182716 std 0.005062637256010072
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-07, 'degree': 6, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7567557671182716 std 0.005062637256010072
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-08, 'degree': 6, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7567557671182716 std 0.005062637256010072
+
+
+--------------------------
+Best method: Least square
+
+--------------------------
+Starting parameter scan for: Group group_1, sampling strategy over and offset False
+--------------------------
+
+Method: Least squares GD
+Ranked 1
+Parameters
+ {'gamma': 0.1, 'degree': 2, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.7391175871204402 std 0.005475919462958445
+
+
+Ranked 2
+Parameters
+ {'gamma': 0.1, 'degree': 3, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.7359995924189933 std 0.005821367670766056
+
+
+Ranked 3
+Parameters
+ {'gamma': 0.1, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.7069186875891582 std 0.00281009295918138
+
+
+Ranked 4
+Parameters
+ {'gamma': 0.1, 'degree': 4, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.6354187894844101 std 0.015552066342613068
+
+
+Ranked 5
+Parameters
+ {'gamma': 0.01, 'degree': 6, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.6230588954554717 std 0.010583998650112501
+
+
+--------------------------
+
+Method: Least squares SGD
+Ranked 1
+Parameters
+ {'gamma': 0.01, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.611147340533931 std 0.010111665030341539
+
+
+Ranked 2
+Parameters
+ {'gamma': 0.01, 'degree': 2, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5671387813327899 std 0.01897199290297688
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-06, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5546056653759935 std 0.028676017728802017
+
+
+Ranked 4
+Parameters
+ {'gamma': 0.001, 'degree': 1, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5540656205420827 std 0.019790261461619902
+
+
+Ranked 5
+Parameters
+ {'gamma': 0.1, 'degree': 6, 'max_iters': 100, 'offset': False}
+With validation accuracy 0.5508253515386183 std 0.02504310013073366
+
+
+--------------------------
+
+Method: Least squares
+Ranked 1
+Parameters
+ {'degree': 9, 'offset': False}
+With validation accuracy 0.7947727735887508 std 0.003313617291421213
+
+
+Ranked 2
+Parameters
+ {'degree': 8, 'offset': False}
+With validation accuracy 0.7939779906256368 std 0.003022083302315393
+
+
+Ranked 3
+Parameters
+ {'degree': 7, 'offset': False}
+With validation accuracy 0.7916038312614632 std 0.003235170229253813
+
+
+Ranked 4
+Parameters
+ {'degree': 6, 'offset': False}
+With validation accuracy 0.7915426941104544 std 0.0029877383682155667
+
+
+Ranked 5
+Parameters
+ {'degree': 5, 'offset': False}
+With validation accuracy 0.7867536172814347 std 0.0027775755973015203
+
+
+--------------------------
+
+Method: Ridge Regression
+Ranked 1
+Parameters
+ {'lambda_': 1e-08, 'degree': 9, 'offset': False}
+With validation accuracy 0.7919604646423477 std 0.003113329336862475
+
+
+Ranked 2
+Parameters
+ {'lambda_': 1e-08, 'degree': 8, 'offset': False}
+With validation accuracy 0.791746484613817 std 0.0033313047091212654
+
+
+Ranked 3
+Parameters
+ {'lambda_': 1e-08, 'degree': 7, 'offset': False}
+With validation accuracy 0.791746484613817 std 0.003126806511845833
+
+
+Ranked 4
+Parameters
+ {'lambda_': 1e-07, 'degree': 9, 'offset': False}
+With validation accuracy 0.7911758712044018 std 0.0031266072739382696
+
+
+Ranked 5
+Parameters
+ {'lambda_': 1e-07, 'degree': 7, 'offset': False}
+With validation accuracy 0.7911249235785613 std 0.0029755158221483006
+
+
+--------------------------
+
+Method: Logistic Regression
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7586610963929081 std 0.004035103428498511
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'degree': 4, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7569594456898309 std 0.003843572094366221
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'degree': 5, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7552476054615853 std 0.0029421095999594554
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'degree': 9, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.754809455879356 std 0.0027622071847963146
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'degree': 6, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.753617281434685 std 0.0028022120517509084
+
+
+--------------------------
+
+Method: Regularized Logistic Regression
+
+Fixing the learning rate gamma to the values of the best from logistic - otherwise too long
+Ranked 1
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.1, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7586814754432443 std 0.0040376242590932365
+
+
+Ranked 2
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.01, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7586610963929081 std 0.004035103428498511
+
+
+Ranked 3
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.001, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7586610963929081 std 0.004035103428498511
+
+
+Ranked 4
+Parameters
+ {'gamma': 1e-05, 'lambda_': 0.0001, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7586610963929081 std 0.004035103428498511
+
+
+Ranked 5
+Parameters
+ {'gamma': 1e-05, 'lambda_': 1e-05, 'degree': 3, 'max_iters': 100, 'offset': False, 'initial_w': None}
+With validation accuracy 0.7586610963929081 std 0.004035103428498511
+
+
+--------------------------
+Best method: Least square
+
+--------------------------
+Done!
