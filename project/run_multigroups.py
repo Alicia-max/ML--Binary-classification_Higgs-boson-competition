@@ -22,6 +22,9 @@ def run(method, params):
     degree = params['degree']
     del params['degree']
 
+    fourier = params['fourier']
+    del params['fourier']
+
     #Offset 
     offset=params['offset']
     del params['offset']
@@ -34,6 +37,9 @@ def run(method, params):
         tx_tr = build_poly(preprocessed_features_train[group], degree)
         tx_te = build_poly(preprocessed_features_test[group], degree)
 
+        tx_tr = fourier_encoding(tx_tr, fourier)
+        tx_te = fourier_encoding(tx_te, fourier)
+
         ##standarization
         tx_tr_std, mean, std= standardize(tx_tr)
         tx_te_std, _, _= standardize(tx_te, mean, std)
@@ -45,12 +51,13 @@ def run(method, params):
         W, loss = method(preprocessed_y[group], tx_tr_std, **params)
         test_prediction[test_masks[group]] = predict(tx_te_std, W)
 
-    create_csv_submission(id_test, np.sign(test_prediction), 'submission_nosampling_leasqsuares.csv')
+    create_csv_submission(id_test, np.sign(test_prediction), 'submission_nosampling_leasqsuares_fourier1.csv')
 
 
 if __name__ == "__main__":
     params = {
         'offset': True,
         'degree': 8,
+        'fourier': 1
     }
     run(least_squares, params)
