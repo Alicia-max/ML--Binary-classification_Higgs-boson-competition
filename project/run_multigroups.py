@@ -3,7 +3,7 @@ from implementations import *
 from preprocessing import *
 #from cross_val import *
 
-def run(method, params):
+def run(methods, params):
     PATH_TRAIN= '../data/train.csv'
     PATH_TEST = '../data/test.csv'
 
@@ -19,19 +19,22 @@ def run(method, params):
         sampling_strategy = None
     )
 
-    degree = params['degree']
-    del params['degree']
-
-    fourier = params['fourier']
-    del params['fourier']
-
-    #Offset 
-    offset=params['offset']
-    del params['offset']
-
     test_prediction = np.zeros(shape=(features_test.shape[0],))
     groups = ['group_0', 'group_1', 'group_2', 'group_3']
-    for group in groups:
+    for i, group in enumerate(groups):
+        method = methods[i]
+        param = params[i]
+
+        degree = param['degree']
+        del param['degree']
+
+        fourier = param['fourier']
+        del param['fourier']
+
+        #Offset 
+        offset=param['offset']
+        del param['offset']
+
         print(group)
         ##Poly
         tx_tr = build_poly(preprocessed_features_train[group], degree)
@@ -48,16 +51,19 @@ def run(method, params):
             tx_tr_std =  add_offset(tx_tr_std)
             tx_te_std =  add_offset(tx_te_std)
         
-        W, loss = method(preprocessed_y[group], tx_tr_std, **params)
+        W, loss = method(preprocessed_y[group], tx_tr_std, **param)
         test_prediction[test_masks[group]] = predict(tx_te_std, W)
 
-    create_csv_submission(id_test, np.sign(test_prediction), 'submission_nosampling_leasqsuares_fourier1.csv')
+    create_csv_submission(id_test, np.sign(test_prediction), 'submission_utlimatum.csv')
 
 
 if __name__ == "__main__":
-    params = {
-        'offset': True,
-        'degree': 8,
-        'fourier': 1
-    }
-    run(least_squares, params)
+    methods = [ridge_regression, ridge_regression, least_squares, least_squares]
+    params = [
+        {'offset': True, 'degree': 9, 'lambda_': 1e-8, 'fourier':1},
+        {'offset': True, 'degree': 9, 'lambda_': 1e-8, 'fourier':2},
+        {'offset': True, 'degree': 9, 'fourier':0},
+        {'offset': True, 'degree': 9, 'fourier':0},
+
+    ]
+    run(methods, params)
