@@ -172,10 +172,10 @@ def least_squares_GD(y, tx, initial_w=None, max_iters=50, gamma=0.1):
         - loss : rmse loss
     """
     
-    #initiate weights randomly
-    if (initial_w is None) : initial_w = np.random.rand(tx.shape[1])
-    
+    #initiate weights to zero since they tend to be small during optimization
+    if (initial_w is None) : initial_w = np.zeros(tx.shape[1])
     w = initial_w
+    
     for n_iter in range(max_iters):
         # compute gradient
         grad, err = compute_gradient_mse(y, tx, w)
@@ -200,8 +200,8 @@ def least_squares_SGD(y, tx, initial_w= None, max_iters=50, gamma=0.1):
         - loss : rmse loss
     """
     
-    #initiate weights randomly
-    if (initial_w is None) : initial_w = np.random.rand(tx.shape[1])
+    #initiate weights to zero since they tend to be small during optimization
+    if (initial_w is None) : initial_w = np.zeros(tx.shape[1])
     w = initial_w
 
     for n_iter in range(max_iters):
@@ -271,8 +271,9 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8):
     y = np.maximum(0, y)
     w = initial_w
     
-    if initial_w is None:
-        w = np.zeros(tx.shape[1])
+    #initiate weights to zero since they tend to be small during optimization
+    if (initial_w is None) : initial_w = np.zeros(tx.shape[1])
+    w = initial_w
         
     losses=[]
     for i in range(max_iters):
@@ -326,9 +327,9 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, thresho
     # In case the targets are still in (-1, 1) range
     y = np.maximum(0, y)
 
+    #initiate weights to zero since they tend to be small during optimization
+    if (initial_w is None) : initial_w = np.zeros(tx.shape[1])
     w = initial_w
-    if initial_w is None:
-        w = np.zeros(tx.shape[1])
         
     losses=[]
 

@@ -68,20 +68,19 @@ def standardize(x, mean_x=None, std_x =None):
     return std_data, mean_x, std_x
 
 def build_poly(x, degree):
-    """polynomial basis functions for input data x, for j=0 up to j=degree."""
-    poly = np.ones((len(x),0))
-    for deg in range(1, degree+1):
-      
-        poly = np.c_[poly, np.power(x, deg)]   
-  
-    return poly
+    """
+    polynomial basis functions for input data x, for j=2 up to j=degree.
+    """
+    out = x
+    for deg in range(2, degree+1):
+        out = np.c_[out, np.power(x, deg)]   
+    return out
 
 def fourier_encoding(x, n):
     """
     Fourier encoding (todo)
     """
-    out = np.ones((len(x),0))
-
+    out = x
     for n_ in range(1, n+1):
         out = np.c_[out, np.cos(np.power(2*np.pi,n_)*x), np.sin(np.power(2*np.pi,n_)*x)]
     return out
@@ -329,5 +328,6 @@ if __name__ == "__main__":
     x = np.random.rand(100,3)
     print(x)
     print(standardize(x))
-    print(_remove_columns(x, [1]))
+    print(x[0,:])
+    print(build_poly(x, 2)[0,:])
     ## OKAY IT WORKS LEZGOOOOOOOOOO
