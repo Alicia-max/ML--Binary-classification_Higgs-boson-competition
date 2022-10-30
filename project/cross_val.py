@@ -58,9 +58,6 @@ def cross_validation(y, x, k_indices, k_fold, method, log=False,  **params):
         tx_tr = build_poly(x_tr, degree)
         tx_te = build_poly(x_te, degree)
         
-        # Standarization
-        std_tx_tr, mean_tx, std_tx = standardize(tx_tr)
-        std_tx_te,mean_te, std_te= standardize(tx_te,mean_tx, std_tx)
         
         # Cross-terms addition
         if cross:
@@ -69,11 +66,15 @@ def cross_validation(y, x, k_indices, k_fold, method, log=False,  **params):
                 
             tx_tr = np.c_[tx_tr, cross_terms_tr]
             tx_te = np.c_[tx_te, cross_terms_te]
+            
+        # Standarization
+        std_tx_tr, mean_tx, std_tx = standardize(tx_tr)
+        std_tx_te,mean_te, std_te= standardize(tx_te,mean_tx, std_tx)
         
         # Offset additions
         std_tx_tr = add_offset(std_tx_tr)
         std_tx_te = add_offset(std_tx_te)
-        
+     
         w, loss = method(y_tr, std_tx_tr, **params_without_degree_cross)
         
         # Access accuracy
@@ -100,28 +101,21 @@ def cross_tunning(y, x, k_fold, method, parameters, seed, log = False) :
         - seed : Seed used by the np.random library to define the k_indices
  
     Output : 
-        - acc_tr_tmp : Array with the mean train accuracy of each fold for each set of parameters 
-        - acc_te_tmp : Array with the mean test accuracy of each fold for each set of parameters 
-        - std_tr, std_te :  Array with the standard deviation of the train accuracy of each fold for each set of parameters 
-        - std_te : Array with the standard deviation of the test accuracy of each fold for each set of parameters 
-        - idx_best : index of the best set of parameters
+        - acc_tr_tmp : Array with each train accuracy of each fold for each set of parameters 
+        - acc_te_tmp : Array with each mean test accuracy of each fold for each set of parameters 
+        - idx_best : indexes of the best param list
+       
     ''' 
     # Split data in k fold
     k_indices = build_k_indices(y, k_fold, seed)
     
-    # Define lists to store the loss of training data and test data
-    acc_tr = []
-    std_tr = []
-    acc_te = []
-    std_te = []
-    
+    acc_tr=[]
+    acc_te=[]
     for params in parameters:
         acc_tr_, acc_te_ = cross_validation(y, x, k_indices, k_fold, method,log,  **params)
-        acc_tr.append(np.mean(acc_tr_))
-        std_tr.append(np.std(acc_tr_))
-        acc_te.append(np.mean(acc_te_))
-        std_te.append(np.std(acc_te_))
-    
+        acc_tr.append(acc_tr_)
+        acc_te.append(acc_te_)
+   
     idx_best =  np.argsort(-np.array(acc_te)) # The minus sign here to get in descending order
         
-    return acc_tr, acc_te, std_tr, std_te, idx_best
+    return acc_tr, acc_te, idx_best
