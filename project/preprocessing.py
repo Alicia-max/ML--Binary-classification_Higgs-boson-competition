@@ -38,14 +38,16 @@ def build_poly(x, degree):
         out = np.c_[out, np.power(x, deg)]   
     return out
 
-def fourier_encoding(x, n):
+def cross_terms(x):
     """
-    Fourier encoding 
+    TODO
     """
-    out = x
-    for n_ in range(1, n+1):
-        out = np.c_[out, np.cos(np.power(2*np.pi,n_)*x), np.sin(np.power(2*np.pi,n_)*x)]
+    out = np.ones((len(x),0))
+    for i in range(x.shape[1]):
+        for j in range(i+1, x.shape[1]):
+            out = np.c_[out, x[:,i]*x[:,j]]
     return out
+
 # -*-------------------------  Data preprocessing ---------------------------------*-
 
 def preprocess_data(X_train, X_test, y_train, Jet_Features=None):
@@ -71,13 +73,9 @@ def preprocess_data(X_train, X_test, y_train, Jet_Features=None):
     return X_train, X_test, y_train
 
 
-def preprocess_data_new(X_train, X_test, y_train):
+def preprocess_data_new(X_train, X_test, y_train, sampling_strategy=None):
     '''
-    Preprocessing by subdividing into jet numbers. 
-    Input : 
-        - X_train : Train Data Matrix
-        - X_test : Test Data Matrix
-        - y_train : Expected value vector for the train set 
+    Testing preprocessing by subdividing into jet numbers
     '''
     jet_num_train = X_train[:, 22]
     jet_num_test = X_test[:, 22]
@@ -102,17 +100,29 @@ def preprocess_data_new(X_train, X_test, y_train):
     X_test_groups, masks = divide_into_subgroups(X_test, jet_num_test)
     # TODO
     black_listed_columns = {
-        'group_0': [4, 5, 6, 22, 23, 24, 25, 26, 27, 28, 29],
-        'group_1': [4, 5, 6, 22, 26, 27, 28],
+        'group_0': [4, 5, 6, 12, 22, 23, 24, 25, 26, 27, 28, 29],
+        'group_1': [4, 5, 6, 12, 22, 26, 27, 28],
         'group_2': [22],
         'group_3': [22]
     }
+    angle_columns = {
+        'group_0': [15, 18, 20],
+        'group_1': [15, 18, 20, 25],
+        'group_2': [15, 18, 20, 25],
+        'group_3': [15, 18, 20, 25]
+    }
     for group in X_train_groups.keys():
+        # Even before, add cos and sin of angles at the end (and then remove the angles)
+        X_train_groups[group], X_test_groups[group] = _add_cos_sin_angles(
+            X_train_groups[group],
+            X_test_groups[group],
+            angle_columns[group]
+        )
         ## First removing the black-listed columns the columns
         X_train_groups[group], X_test_groups[group] = _remove_columns(
              X_train_groups[group],
              X_test_groups[group],
-             black_listed_columns[group]
+             black_listed_columns[group] + angle_columns[group]
         ) 
     
         ## Filling the missing values with the median of each sets
@@ -128,11 +138,18 @@ def preprocess_data_new(X_train, X_test, y_train):
             threshold = 1.5,
             level = 5
         )
-      
-    # Should return dictonaries with group as keys
+        
+    ## Should return dictonaries with group as keys
     return X_train_groups, X_test_groups, y_train_groups, masks
 
 # -*-------------------------  Methods - preprocessing ---------------------------------*-
+
+def _add_cos_sin_angles(x, x_test, columns):
+    for column in columns:
+        x = np.c_[x, np.cos(x[:, column]), np.sin(x[:, column])]
+        x_test = np.c_[x_test, np.cos(x_test[:, column]), np.sin(x_test[:, column])]
+    print('Angles added')
+    return x, x_test
 
 def _remove_columns(X_train, X_test, columns):
     '''

@@ -36,12 +36,11 @@ def cross_validation(y, x, k_indices, k_fold, method, log=False,  **params):
     acc_tr_tmp=[]
     acc_te_tmp=[]
     degree = params['degree']
-    fourier=params['fourier']
-    
-    params_without_degree_offset = params
-    del params_without_degree_offset['degree']
-    del params_without_degree_offset['fourier']
-   
+    cross = params['cross']
+
+    params_without_degree_cross = params
+    del params_without_degree_cross['degree']
+    del params_without_degree_cross['cross']
     
     for k in range(k_fold) :
         
@@ -63,15 +62,19 @@ def cross_validation(y, x, k_indices, k_fold, method, log=False,  **params):
         std_tx_tr, mean_tx, std_tx = standardize(tx_tr)
         std_tx_te,mean_te, std_te= standardize(tx_te,mean_tx, std_tx)
         
-        # Cos & Sin transfo
-        std_tx_tr = fourier_encoding(std_tx_tr, fourier)
-        std_tx_te = fourier_encoding(std_tx_te, fourier)
+        # Cross-terms addition
+        if cross:
+            cross_terms_tr = cross_terms(x_tr)
+            cross_terms_te = cross_terms(x_te)
+                
+            tx_tr = np.c_[tx_tr, cross_terms_tr]
+            tx_te = np.c_[tx_te, cross_terms_te]
         
-        # Offset Adding
+        # Offset additions
         std_tx_tr = add_offset(std_tx_tr)
         std_tx_te = add_offset(std_tx_te)
         
-        w, loss = method(y_tr, std_tx_tr, **params_without_degree_offset)
+        w, loss = method(y_tr, std_tx_tr, **params_without_degree_cross)
         
         # Access accuracy
         if(log) : 
@@ -119,6 +122,6 @@ def cross_tunning(y, x, k_fold, method, parameters, seed, log = False) :
         acc_te.append(np.mean(acc_te_))
         std_te.append(np.std(acc_te_))
     
-    idx_best =  np.argsort(-np.array(acc_te)) # Theminus sign here to get in descending order
+    idx_best =  np.argsort(-np.array(acc_te)) # The minus sign here to get in descending order
         
     return acc_tr, acc_te, std_tr, std_te, idx_best
