@@ -23,10 +23,12 @@ def run(methods, params):
     for i, group in enumerate(groups):
         method = methods[i]
         param = params[i]
+        
         degree = param['degree']
         del param['degree']
         cross = param['cross']
         del param['cross']
+
         print(group)
         ##Poly
         tx_tr = build_poly(preprocessed_features_train[group], degree)
@@ -49,7 +51,7 @@ def run(methods, params):
         W, loss = method(preprocessed_y[group], tx_tr_std, **param)
         test_prediction[test_masks[group]] = predict(tx_te_std, W)
 
-    create_csv_submission(id_test, np.sign(test_prediction), 'submission_finalgang.csv')
+    create_csv_submission(id_test, np.sign(test_prediction), 'submission_final.csv')
 
 
 ## Final Run with our Best Model
