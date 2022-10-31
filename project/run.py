@@ -2,7 +2,7 @@ from helpers import *
 from implementations import *
 from preprocessing import *
 
-def run(method, param):
+def run(methods, params):
     PATH_TRAIN= '../data/train.csv'
     PATH_TEST = '../data/test.csv'
 
@@ -20,19 +20,24 @@ def run(method, param):
     test_prediction = np.zeros(shape=(features_test.shape[0],))
     groups = ['group_0', 'group_1', 'group_2', 'group_3']
     
-    degree = param['degree']
-    del param['degree']
     for i, group in enumerate(groups):
+        method = methods[i]
+        param = params[i]
+        degree = param['degree']
+        del param['degree']
+        cross = param['cross']
+        del param['cross']
         print(group)
         ##Poly
         tx_tr = build_poly(preprocessed_features_train[group], degree)
         tx_te = build_poly(preprocessed_features_test[group], degree)
 
-        cross_terms_tr = cross_terms(preprocessed_features_train[group])
-        cross_terms_te = cross_terms(preprocessed_features_test[group])
+        if cross:
+            cross_terms_tr = cross_terms(preprocessed_features_train[group])
+            cross_terms_te = cross_terms(preprocessed_features_test[group])
 
-        tx_tr = np.c_[tx_tr, cross_terms_tr]
-        tx_te = np.c_[tx_te, cross_terms_te]
+            tx_tr = np.c_[tx_tr, cross_terms_tr]
+            tx_te = np.c_[tx_te, cross_terms_te]
 
         ##standarization
         tx_tr_std, mean, std= standardize(tx_tr)
@@ -44,8 +49,15 @@ def run(method, param):
         W, loss = method(preprocessed_y[group], tx_tr_std, **param)
         test_prediction[test_masks[group]] = predict(tx_te_std, W)
 
-    create_csv_submission(id_test, np.sign(test_prediction), 'submission_RR_deg10_lam10_cross_angles.csv')
+    create_csv_submission(id_test, np.sign(test_prediction), 'submission_finalgang.csv')
 
 
 ## Final Run with our Best Model
-run(least_squares, {'degree':10})
+methods = [least_squares, least_squares, least_squares, least_squares]
+params = [
+    {'degree':10, 'cross': True},
+    {'degree':10, 'cross': True},
+    {'degree':10, 'cross': True},
+    {'degree':10, 'cross': False}
+]
+run(methods, params)
