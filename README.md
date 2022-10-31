@@ -23,14 +23,12 @@ The folders should be in the below structure:
         ├── train.csv
         └── test.csv
     ├── project
+        ├── analysis.ipynb
         ├── cross_val.py
         ├── helpers.py
         ├── implementations.py
-        ├── plot.py
         ├── preprocessing.py
-        ├── run_multigroups.py
-        ├── visu.ipynb
-        └── visu_jet.ipynb
+        ├── run.py
     ├── run.py
     └── README.md
 
@@ -55,10 +53,6 @@ In order to reproduce the code, one needs to run the `run.py` file. The predicti
 
 `cross_val.py`: Implements K-fold cross-validation to make hyperparameter tuning for the implemented methods such as, but not limited to, learning rate in GD/SGD and degree of polynomial expansion.
 
-`plot.py`: Visualizes the results of the cross-validation code.
-
 ### Notebook
 
-`visu.ipynb`: Explores the data and the distribution of the features. Implements baseline runs, tunes parameters with cross-validation and outputs accuracy plots.
-
-`visu_jet.ipynb`: Divides the data according to the categoraical `PRI_jet_num` variable. Implements the methods, tunes parameters with cross-validation and outputs accuracy plots.
+`analysis.ipynb`: Explores the data and the distribution of the features. Implements baseline runs, divides the data according to the categoraical `PRI_jet_num` variable. Implements the methods, tunes parameters with cross-validation and outputs accuracy plots.

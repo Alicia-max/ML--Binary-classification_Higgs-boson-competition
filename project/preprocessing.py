@@ -27,7 +27,6 @@ def standardize(x, mean_x=None, std_x =None):
     if(len(std_x[std_x <=0])>0) :
         raise ValueError("DIVISION BY 0 : Find features with a 0 standard deviation")
  
-    
     return std_data, mean_x, std_x
 
 def build_poly(x, degree):
@@ -41,7 +40,7 @@ def build_poly(x, degree):
 
 def cross_terms(x):
     """
-    TODO
+    Return cross term multiplication of the input vectors
     """
     out = np.ones((len(x),0))
     for i in range(x.shape[1]):
@@ -60,9 +59,16 @@ def preprocess_data(X_train, X_test, y_train, Jet_Features=None):
         - y_train : Expected value vector for the train set 
         - Jet_Features : index of features relate to the Jet_Number
     '''
+
+    angle_columns = [15, 18, 20, 25]
+
+    X_train, X_test =_add_cos_sin_angles(X_train, X_test, angle_columns)
+
     if(Jet_Features is not None) : 
         # Removing the Jet related features
-        X_train, X_test = _remove_columns(X_train, X_test, Jet_Features)
+        X_train, X_test = _remove_columns(X_train, X_test, Jet_Features + angle_columns)
+    else:
+        X_train, X_test = _remove_columns(X_train, X_test, angle_columns)
    
     
     # Filling the missing values with the median of each sets
@@ -74,14 +80,13 @@ def preprocess_data(X_train, X_test, y_train, Jet_Features=None):
     return X_train, X_test, y_train
 
 
-def preprocess_data_new(X_train, X_test, y_train, sampling_strategy=None):
+def preprocess_data_jet(X_train, X_test, y_train):
     '''
     Testing preprocessing by subdividing into jet numbers
     '''
     jet_num_train = X_train[:, 22]
     jet_num_test = X_test[:, 22]
 
-    # Still do not know if we should divide into 3 or 4 groups.
     def divide_into_subgroups(x, jet_num):
         x_groups = {
             'group_0': x[jet_num == 0.],
@@ -99,13 +104,16 @@ def preprocess_data_new(X_train, X_test, y_train, sampling_strategy=None):
     X_train_groups , _= divide_into_subgroups(X_train, jet_num_train)
     y_train_groups, _ = divide_into_subgroups(y_train, jet_num_train)
     X_test_groups, masks = divide_into_subgroups(X_test, jet_num_test)
-    # TODO
+    
+    # Columns that contrain undefined features for certain groups
     black_listed_columns = {
         'group_0': [4, 5, 6, 12, 22, 23, 24, 25, 26, 27, 28, 29],
         'group_1': [4, 5, 6, 12, 22, 26, 27, 28],
         'group_2': [22],
         'group_3': [22]
     }
+
+    # Angles that we want to replace with cos and sin
     angle_columns = {
         'group_0': [15, 18, 20],
         'group_1': [15, 18, 20, 25],
@@ -140,16 +148,21 @@ def preprocess_data_new(X_train, X_test, y_train, sampling_strategy=None):
             level = 5
         )
         
-    ## Should return dictonaries with group as keys
     return X_train_groups, X_test_groups, y_train_groups, masks
 
 # -*-------------------------  Methods - preprocessing ---------------------------------*-
 
 def _add_cos_sin_angles(x, x_test, columns):
+    """
+    Concatenate cos(columns) and sin(columns) at the end of the input x / x_test
+    
+    Input : 
+        - x : Data Matrix
+        - columns : index of column to be removed   
+    """
     for column in columns:
         x = np.c_[x, np.cos(x[:, column]), np.sin(x[:, column])]
         x_test = np.c_[x_test, np.cos(x_test[:, column]), np.sin(x_test[:, column])]
-    print('Angles added')
     return x, x_test
 
 def _remove_columns(X_train, X_test, columns):
@@ -251,14 +264,3 @@ def _find_outliers(x, threshold=1.5, level=5):
             outliers_index.append(idx)
             
     return outliers_index
-
-
-
-if __name__ == "__main__":
-    # For testing purposes
-    x = np.random.rand(100,3)
-    print(x)
-    print(standardize(x))
-    print(x[0,:])
-    print(build_poly(x, 2)[0,:])
-    ## OKAY IT WORKS LEZGOOOOOOOOOO

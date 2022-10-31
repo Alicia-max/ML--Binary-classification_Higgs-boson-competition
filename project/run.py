@@ -1,9 +1,8 @@
 from helpers import *
 from implementations import *
 from preprocessing import *
-#from cross_val import *
 
-def run(methods, params):
+def run(method, param):
     PATH_TRAIN= '../data/train.csv'
     PATH_TEST = '../data/test.csv'
 
@@ -12,22 +11,18 @@ def run(methods, params):
     _, features_test, id_test = load_csv_data(PATH_TEST, sub_sample=False)
 
     ## Preprocess data
-    preprocessed_features_train,preprocessed_features_test,preprocessed_y, test_masks = preprocess_data_new(
+    preprocessed_features_train,preprocessed_features_test,preprocessed_y, test_masks = preprocess_data_jet(
         features_train, 
         features_test,
         target_train, 
-        sampling_strategy = None
     )
 
     test_prediction = np.zeros(shape=(features_test.shape[0],))
     groups = ['group_0', 'group_1', 'group_2', 'group_3']
+    
+    degree = param['degree']
+    del param['degree']
     for i, group in enumerate(groups):
-        method = methods[i]
-        param = params[i]
-
-        degree = param['degree']
-        del param['degree']
-
         print(group)
         ##Poly
         tx_tr = build_poly(preprocessed_features_train[group], degree)
@@ -53,4 +48,4 @@ def run(methods, params):
 
 
 ## Final Run with our Best Model
-run(least_squares, {'degree':10, 'cross' : True})
+run(least_squares, {'degree':10})
