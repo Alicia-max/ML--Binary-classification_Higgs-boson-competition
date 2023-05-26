@@ -3,8 +3,8 @@ from implementations import *
 from preprocessing import *
 
 def run(methods, params):
-    PATH_TRAIN= '../data/train.csv'
-    PATH_TEST = '../data/test.csv'
+    PATH_TRAIN= './data/train.csv'
+    PATH_TEST = './data/test.csv'
 
     # Loading data
     target_train, features_train, id_train = load_csv_data(PATH_TRAIN, sub_sample=False)

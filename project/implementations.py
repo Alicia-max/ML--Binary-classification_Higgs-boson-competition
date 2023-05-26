@@ -4,16 +4,6 @@ from helpers import *
 
 # -*------------------------- Tools ---------------------------------*-
 
-def _verify_range (x, limits) : 
-    """
-    Verifies the received array for extreme values defined by the threshold and return the modified array
-    Input : 
-        - x : array of floats
-        - limits : array defining the upper and lower boundaries
-    """
-    x[x>limits[0]]=limits[0]
-    x[x<limits[1]]=limits[1]
-    return x
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
     """
@@ -53,26 +43,13 @@ def compute_mse(y, tx, w):
         - y : Expected value vector
         - x:  Data Matrix
         - w : Weight Vector
-    """
-    
-    # If the error is found out of the boundaries then the loss becomes infinite 
-    # So we limite it bewteen 1e150& -1e150  (find in en emprical way)  
-    e = _verify_range(y - tx.dot(w), [1e150,-1e150])
+    """  
+    e =(y - tx.dot(w))
     
     # Factor of 0.5 to be consistent with the course
-    mse = (e**2/(2*len(e)))
+    mse = ((1/2)*np.mean(e**2))
     return mse
 
-def compute_rmse(y, tx, w) : 
-    """
-    Computes and Returns the Root Mean Square Error. 
-    Input 
-        - y : Expected value vector
-        - x:  Data Matrix
-        - w : Weight vector
-        """
-    mse = compute_mse(y, tx, w)
-    return np.sqrt(2*mse)
 
 def calculate_loss_log(y, tx, w):
     """ 
@@ -82,9 +59,10 @@ def calculate_loss_log(y, tx, w):
         - x:  Data Matrix
         - w : Weight vector
     """
-    eta = (np.matmul(tx, w))
-    eta[eta > 700] = 700
-    return (1/len(y))*( np.sum(np.log(1+np.exp(eta))-y*(eta)))
+    pred = sigmoid(tx.dot(w))
+    loss = (y.T.dot(np.log(pred)) + (1 - y).T.dot(np.log(1 - pred)))/len(y)
+    return np.squeeze(-loss)
+
 
 # -*------------------------- Gradient ---------------------------------*-
 
@@ -96,7 +74,7 @@ def compute_gradient_mse(y, tx, w):
         - tx: Data Matrix
         - w : Weight vector
     """
-    err = _verify_range(y - tx.dot(w), [1e150,-1e150])
+    err = (y - tx.dot(w))
     grad = -tx.T.dot(err) / len(err)
     return grad
 
@@ -110,14 +88,13 @@ def compute_gradient_logistic(y, tx, w):
         - w : Weight vector
     """
     pred = sigmoid(tx.dot(w))
-    grad = tx.T.dot(pred - y)
+    grad = tx.T.dot(pred - y)/len(pred)
     return grad
 
 def sigmoid(t):
-    """Apply sigmoid function on the input parameter t."""
-
-    #limit the value of t to avoid the infinite term
-    t[t<-700]=-700
+    """
+    Apply sigmoid function on the input parameter t.
+    """
     return (1.0 / (1 + np.exp(-t)))
 
 # -*------------------------- Predication and Accuracy ---------------------------------*
@@ -182,7 +159,7 @@ def mean_squared_error_gd(y, tx, initial_w=None, max_iters=50, gamma=0.1):
         - gamma : learning rate for GD 
     Output : 
         - w : Weight Vectors
-        - loss : RMSE of the calculated prediction (tx@w) and the expected value y using the final w 
+        - loss : MSE of the calculated prediction (tx@w) and the expected value y using the final w 
     """
   
     # Initiate weights to zero since they tend to be small during optimization
@@ -195,7 +172,7 @@ def mean_squared_error_gd(y, tx, initial_w=None, max_iters=50, gamma=0.1):
         grad = compute_gradient_mse(y, tx, w)
         w = w - gamma * grad    
 
-    loss=compute_rmse(y, tx, w) 
+    loss=compute_mse(y, tx, w) 
     return w, loss
 
 def mean_squared_error_sgd(y, tx, initial_w= None, max_iters=50, gamma=0.1):
@@ -211,7 +188,7 @@ def mean_squared_error_sgd(y, tx, initial_w= None, max_iters=50, gamma=0.1):
         - gamma : learning rate for GD 
     Output : 
         - w : Weight Vectors
-        - loss : RMSE of the calculated prediction (tx@w) and the expected value y using the final w 
+        - loss : MSE of the calculated prediction (tx@w) and the expected value y using the final w 
     """
     
     # Initiate weights to zero since they tend to be small during optimization
@@ -226,7 +203,7 @@ def mean_squared_error_sgd(y, tx, initial_w= None, max_iters=50, gamma=0.1):
             w = w - gamma * grad
       
     # Calculate last loss
-    loss = compute_rmse(y, tx, w)
+    loss = compute_mse(y, tx, w)
     return w, loss
 
 def least_squares(y, tx):
@@ -239,13 +216,13 @@ def least_squares(y, tx):
        
     Output : 
         - w : Weight Vectors
-        - loss : RMSE of the calculated prediction (tx@w) and the expected value y
+        - loss : MSE of the calculated prediction (tx@w) and the expected value y
     """
     a = tx.T.dot(tx)
     b = tx.T.dot(y)
     w = np.linalg.solve(a, b)
     
-    loss = compute_rmse(y, tx, w)
+    loss = compute_mse(y, tx, w)
     return w, loss
 
 def ridge_regression(y, tx, lambda_):
@@ -258,16 +235,16 @@ def ridge_regression(y, tx, lambda_):
         - lambda_ :  L1- Regularization term 
     Ouput : 
         - w : Weight Vectors 
-        - loss : RMSE of the computed prediction (tx@w) and the expected value y
+        - loss : MSE of the computed prediction (tx@w) and the expected value y
     """
     a = tx.T.dot(tx) + 2*tx.shape[0]*lambda_*np.identity(tx.shape[1])
     b = tx.T.dot(y)
     w = np.linalg.solve(a, b)
     
-    loss = compute_rmse(y, tx, w)
+    loss = compute_mse(y, tx, w)
     return w, loss
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8):
+def logistic_regression(y, tx, initial_w, max_iters, gamma):
     '''
     Computes the weights and associated loss for a logistic regression solving y=sigmoid(tx @ w) using Gradient Descent. 
     This method aims at finding w such that it it minimizes the negative log likelihood (may find local mimimum).
@@ -278,57 +255,29 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold = 1e-8):
         - initial_w : Initial weight vector (set to 0 if not given) to start the GD algorithm.
         - max_iters : Number of iteration for GD
         - gamma : learning rate for GD 
-        - threshold : defined how much the loss has to changed over the iteration to continue the GD Algorithm
         
     Ouput : 
         - w : Weight Vectors
-        - loss : RMSE of the computed prediction and the expected value y
+        - loss : MSE of the computed prediction and the expected value y
     '''
     # In case the targets are still in (-1, 1) range
-    y = np.maximum(0, y)
-    w = initial_w
+    y =  (y > 0.) * 1.0
     
     # Initiate weights to zero since they tend to be small during optimization
     if (initial_w is None) : initial_w = np.zeros(tx.shape[1])
     w = initial_w
-    losses=[]
     
     # Start Logistic Regression
     for i in range(max_iters):
-    
         # Compute gradient & update w
         grad = compute_gradient_logistic(y, tx, w)
         w = w - gamma * grad
-        
-        # Compute loss  
-        loss = calculate_loss_log(y, tx, w)
-        losses.append(loss)
-        
-        # Stop the search if the loss has not changed enough
-        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-            break
-            
-    return w, losses[-1]
 
-def penalized_logistic_regression(y, tx, w, lambda_, gamma):
-    """
-    Computes one step of gradient descent for regularized logistic regression.
-    Input : 
-        - y : Expected value vector
-        - x : Data Matrix
-        - lambda_ : L1- Regularization term 
-        - gamma : learning rate GD 
-    output : 
-        - w : Weight vectors
-        - loss : RMSE of the prediction and the expected value 
-    """
-    
-    gradient = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
-    w=w-gamma*gradient
-    loss = calculate_loss_log(y, tx, w) + lambda_ * np.squeeze(w.T.dot(w))
+    loss= calculate_loss_log(y, tx, w)      
     return w, loss
 
-def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, threshold = 1e-8):
+
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     '''
     Computes the weights and associated loss for a logistic regression solving y=sigmoid(tx @ w)
     using Gradient Descent and using a penalization term lambda_.
@@ -339,28 +288,22 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, thresho
         - tx : Data Matrix
         - lambda_ : learning rate L1 Regression
         - gamma : learning rate for GD 
-        - threshold : defined how much the loss has to changed over the iteration to continue the GD Algorithm
         
     Ouput : 
         - w : Weight Vectors
-        - loss : RMSE of the computed prediction and the expected value y
+        - loss : MSE of the computed prediction and the expected value y
     '''
     # In case the targets are still in (-1, 1) range
-    y = np.maximum(0, y)
+    y =  (y > 0.) * 1.0
 
     # Initiate weights to zero since they tend to be small during optimization
     if (initial_w is None) : initial_w = np.zeros(tx.shape[1])
     w = initial_w
-    losses=[]
-    
+   
     # Start Logistic Regression
     for i in range(max_iters):
-        # Compute gradient & update w
-        w, loss = penalized_logistic_regression(y, tx, w, lambda_, gamma)
-        losses.append(loss)
+        gradient = compute_gradient_logistic(y, tx, w) + 2 * lambda_ * w
+        w=w-gamma*gradient
         
-        # Verify if the loss has sufficiently changed
-        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-            break
-
-    return w, losses[-1]
+    loss = calculate_loss_log(y, tx, w) 
+    return w, loss
